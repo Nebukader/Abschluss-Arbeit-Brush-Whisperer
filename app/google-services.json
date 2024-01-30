@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "475852833638",
+    "project_id": "brush-whisperer",
+    "storage_bucket": "brush-whisperer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475852833638:android:cff202f8ca1cc11a913ea7",
+        "android_client_info": {
+          "package_name": "com.example.brush_wisperer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "475852833638-cfsjt9g6a7nmrp4ce2kakri01sdhs8kk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.brush_wisperer",
+            "certificate_hash": "3bdab82c837e3d6c6c80ce9d4fcc8ad310216f94"
+          }
+        },
+        {
+          "client_id": "475852833638-gfqf28p57hq1fq62ap4mb0jm9oo7pm5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSz1zKJcbDneLmxtmDQqTqqp550oXeKEk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "475852833638-gfqf28p57hq1fq62ap4mb0jm9oo7pm5c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
