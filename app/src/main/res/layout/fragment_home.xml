@@ -7,6 +7,13 @@
     android:orientation="vertical"
     tools:context=".ui.HomeFragment.HomeFragment">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/dataBT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@drawable/ic_launcher_foreground" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,9 +84,9 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
         tools:listitem="@layout/news_item"
-        />
+        >
 
-
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </LinearLayout>
