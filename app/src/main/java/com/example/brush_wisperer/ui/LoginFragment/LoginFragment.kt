@@ -29,7 +29,7 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by activityViewModels()
     private lateinit var binding: FragmentLoginBinding
     private lateinit var client: GoogleSignInClient
-    private var successfull = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,28 +44,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.LoginBtn.setOnClickListener {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Login")
-
-            val viewInflated: View =
-                LayoutInflater.from(context).inflate(R.layout.login_popup_dialog, null)
-            val inputEmail = viewInflated.findViewById(R.id.username) as EditText
-            val inputPassword = viewInflated.findViewById(R.id.password) as EditText
-
-            builder.setView(viewInflated)
-
-            builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
-                dialog.dismiss()
-                val enteredEmail = inputEmail.text.toString()
-                val enteredPassword = inputPassword.text.toString()
-
-                //Todo check if user exists
-                //viewModel.register(enteredEmail,enteredPassword)
-            }
-
-            builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
-
-            builder.show()
+            viewModel.loginDialog(view)
         }
 
 
@@ -95,9 +74,8 @@ class LoginFragment : Fragment() {
 
                 if (enteredUserName == enteredUserName && enteredPassword == enteredPasswordConfirm && enteredEmail == enteredEmailConfirm){
 
-                    //Todo user in Firebase / Firestore anlegen
-                    viewModel.register(enteredUserName,enteredEmail, enteredPassword)
-                    successfull = true
+                    viewModel.signUpNewUser(enteredUserName,enteredEmail, enteredPassword)
+
                 }else{
                     Toast.makeText(requireContext(),
                         getString(R.string.passwords_or_emails_do_not_match), Toast.LENGTH_SHORT).show()
@@ -119,6 +97,10 @@ class LoginFragment : Fragment() {
         binding.signInGoogleBtn.setOnClickListener {
             val intent = client.signInIntent
             startActivityForResult(intent, 10001)
+        }
+
+        binding.skipBT.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
     }
 

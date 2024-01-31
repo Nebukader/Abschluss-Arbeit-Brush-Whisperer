@@ -1,32 +1,77 @@
 package com.example.brush_wisperer.ui.LoginFragment
 
 
+import android.app.AlertDialog
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.EditText
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.Data.Model.Profile
-import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.example.brush_wisperer.R
+import com.example.brush_wisperer.RepositoryFirebase
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import android.content.Context
-import android.content.Intent
-import androidx.fragment.app.FragmentActivity
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 
 
 class LoginViewModel : ViewModel() {
 
 
     val auth = Firebase.auth
-    val firestore = Firebase.firestore
-    private lateinit var client: GoogleSignInClient
+    private val db = Firebase.firestore
+    private val userDb = RepositoryFirebase()
+    private val nav = LoginFragment().findNavController()
 
+    fun signUpNewUser(username: String, email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = hashMapOf(
+                    "username" to username,
+                    "email" to email
+                )
+                userDb.newUser(user)
+            } else {
+                Log.w("TAG", "createUserWithEmail:failure", task.exception)
+            }
+        }
+    }
+
+    fun loginDialog(context: View) {
+        val builder = AlertDialog.Builder(context.context)
+        builder.setTitle("Login")
+
+        val viewInflated: View =
+            LayoutInflater.from(context.context).inflate(R.layout.login_popup_dialog, null)
+        val inputEmail = viewInflated.findViewById(R.id.username) as EditText
+        val inputPassword = viewInflated.findViewById(R.id.password) as EditText
+
+        builder.setView(viewInflated)
+
+        builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
+            dialog.dismiss()
+            val enteredEmail = inputEmail.text.toString()
+            val enteredPassword = inputPassword.text.toString()
+
+            userDb.loginUser(enteredEmail, enteredPassword)
+            if (userDb.user != null) {
+                nav.navigate(R.id.action_loginFragment_to_homeFragment)
+                Log.d("TAG", "loginDialog: ${auth.currentUser}")
+            } else {
+                Log.d("TAG", "loginDialog: ${auth.currentUser}")
+            }
+        }
+        builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+
+        builder.show()
+
+    }
 
 
     private val _user: MutableLiveData<FirebaseUser?> = MutableLiveData()
@@ -41,11 +86,11 @@ class LoginViewModel : ViewModel() {
         _user.value = auth.currentUser
 
         auth.currentUser?.let { firebaseUser ->
-            profile = firestore.collection("users").document(firebaseUser.uid)
+            profile = db.collection("users").document(firebaseUser.uid)
         }
     }
 
-    fun register(username:String ,email: String, password: String) {
+    fun register(username: String, email: String, password: String) {
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
