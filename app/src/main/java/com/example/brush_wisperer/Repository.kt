@@ -1,4 +1,4 @@
-package com.example.brush_wisperer.Data
+package com.example.brush_wisperer
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
