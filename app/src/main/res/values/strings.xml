@@ -10,9 +10,14 @@
     <string name="login_success">Login Success</string>
     <string name="login_failed">Login Failed</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Signup Screen -->
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="email">EmailAdress</string>
+    <string name="emailConfirm">Confirm your EmailAdress</string>
+    <string name="passwordConfirm">Confirm your Password</string>
+    <string name="Confirm">Confirm</string>
+    <string name="Cancel">Cancel</string>
+    <string name="signup_success">Signup Success</string>
+    <string name="passwords_or_emails_do_not_match">Passwords or emails do not match</string>
 </resources>
