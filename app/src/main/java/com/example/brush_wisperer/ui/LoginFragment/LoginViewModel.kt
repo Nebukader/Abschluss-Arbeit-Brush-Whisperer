@@ -45,7 +45,7 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    fun register(email: String, password: String) {
+    fun register(username:String ,email: String, password: String) {
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
