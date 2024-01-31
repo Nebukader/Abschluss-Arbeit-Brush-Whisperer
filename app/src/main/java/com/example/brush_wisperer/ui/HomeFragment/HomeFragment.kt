@@ -29,5 +29,11 @@ class HomeFragment : Fragment() {
             // Verwenden Sie hier die Benutzerdaten
             binding.usernameTV.text = "$name"
         }
+        binding.dataBT.setOnClickListener {
+            HomeViewModel().scrapeWebPage()
+
+
+        }
     }
+
 }
