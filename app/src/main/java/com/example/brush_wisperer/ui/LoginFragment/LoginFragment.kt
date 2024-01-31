@@ -13,7 +13,6 @@ import android.widget.Toast
 
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.brush_wisperer.MainActivity
 
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentLoginBinding
@@ -30,6 +29,7 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by activityViewModels()
     private lateinit var binding: FragmentLoginBinding
     private lateinit var client: GoogleSignInClient
+    private var successfull = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +39,7 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    //Login
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,7 +59,8 @@ class LoginFragment : Fragment() {
                 val enteredEmail = inputEmail.text.toString()
                 val enteredPassword = inputPassword.text.toString()
 
-                viewModel.register(enteredEmail, enteredPassword)
+                //Todo check if user exists
+                //viewModel.register(enteredEmail,enteredPassword)
             }
 
             builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
@@ -66,8 +68,48 @@ class LoginFragment : Fragment() {
             builder.show()
         }
 
-        // Google Login with Firebase
 
+        // Register
+        binding.signupBT.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Register")
+
+            val viewInflated: View =
+                LayoutInflater.from(context).inflate(R.layout.signup_login, null)
+
+            val inputName = viewInflated.findViewById(R.id.username) as EditText
+            val inputPassword = viewInflated.findViewById(R.id.password) as EditText
+            val inputPasswordConfirm = viewInflated.findViewById(R.id.passwordConfirm) as EditText
+            val inputEmail = viewInflated.findViewById(R.id.email) as EditText
+            val inputEmailConfirm = viewInflated.findViewById(R.id.emailConfirm) as EditText
+
+            builder.setView(viewInflated)
+
+            builder.setPositiveButton(R.string.Confirm) { dialog, _ ->
+                dialog.dismiss()
+                val enteredUserName = inputName.text.toString()
+                val enteredPassword = inputPassword.text.toString()
+                val enteredPasswordConfirm = inputPasswordConfirm.text.toString()
+                val enteredEmail = inputEmail.text.toString()
+                val enteredEmailConfirm = inputEmailConfirm.text.toString()
+
+                if (enteredUserName == enteredUserName && enteredPassword == enteredPasswordConfirm && enteredEmail == enteredEmailConfirm){
+
+                    //Todo user in Firebase / Firestore anlegen
+                    viewModel.register(enteredUserName,enteredEmail, enteredPassword)
+                    successfull = true
+                }else{
+                    Toast.makeText(requireContext(),
+                        getString(R.string.passwords_or_emails_do_not_match), Toast.LENGTH_SHORT).show()
+                }
+            }
+            builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+
+            builder.show()
+        }
+
+
+        // Google Login with Firebase
         val option = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -78,12 +120,11 @@ class LoginFragment : Fragment() {
             val intent = client.signInIntent
             startActivityForResult(intent, 10001)
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == 10001){
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
@@ -94,14 +135,14 @@ class LoginFragment : Fragment() {
                         val user = FirebaseAuth.getInstance().currentUser
                         val email = user?.email
                         Toast.makeText(requireContext(), "${getString(R.string.login_success)} $email", Toast.LENGTH_SHORT).show()
-                        val nav = findNavController()
-                        nav.navigate(R.id.action_loginFragment_to_homeFragment)
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     }else{
                         Toast.makeText(requireContext(),"${getString(R.string.login_failed)}", Toast.LENGTH_SHORT).show()
                     }
-
                 }
         }
     }
+
+
 
 }
