@@ -31,6 +31,7 @@ class HomeFragment : Fragment() {
         }
         binding.dataBT.setOnClickListener {
             HomeViewModel().scrapeWebPage()
+            HomeViewModel().scrapeBlogPost("/blogs/explore/tagged/news")
 
 
         }
