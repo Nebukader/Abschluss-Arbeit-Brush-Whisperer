@@ -10,6 +10,8 @@ android {
     namespace = "com.example.brush_wisperer"
     compileSdk = 34
 
+
+
     defaultConfig {
         applicationId = "com.example.brush_wisperer"
         minSdk = 31
@@ -71,4 +73,6 @@ dependencies {
     implementation ("androidx.room:room-runtime:2.6.1")
     implementation ("androidx.room:room-ktx:2.6.1")
     ksp ("androidx.room:room-compiler:2.6.1")
+
+    implementation("org.jsoup:jsoup:1.14.3")
 }
