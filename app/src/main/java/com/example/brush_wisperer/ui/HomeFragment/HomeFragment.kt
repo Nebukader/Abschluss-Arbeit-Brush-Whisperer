@@ -12,6 +12,13 @@ import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment() {
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
+
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHomeBinding.bind(view)
@@ -21,7 +28,7 @@ class HomeFragment : Fragment() {
             val name = user.displayName
             val email = user.email
             // Verwenden Sie hier die Benutzerdaten
-            binding.testTV.text = "Hallo $name"
+            binding.testTV.text = "Hallo $name \n$email"
         }
     }
 }
