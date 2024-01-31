@@ -26,9 +26,8 @@ class HomeFragment : Fragment() {
         val user = FirebaseAuth.getInstance().currentUser
         user?.let {
             val name = user.displayName
-            val email = user.email
             // Verwenden Sie hier die Benutzerdaten
-            binding.testTV.text = "Hallo $name \n$email"
+            binding.usernameTV.text = "$name"
         }
     }
 }
