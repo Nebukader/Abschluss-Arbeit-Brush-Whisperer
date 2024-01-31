@@ -51,10 +51,10 @@
         <Button
             android:id="@+id/signInGoogleBtn"
             android:textAllCaps="false"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:background="@color/blue"
-            android:text="Sign up with Google"
+            android:text="@string/sign_in_with_google"
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -62,6 +62,7 @@
 
 
     <Button
+        android:id="@+id/skipBT"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
