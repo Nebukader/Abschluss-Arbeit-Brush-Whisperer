@@ -8,11 +8,12 @@
     android:paddingBottom="8dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/newsCV"
         android:layout_width="250dp"
-        app:cardUseCompatPadding="true"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="1dp"
         app:cardBackgroundColor="@color/teal_700"
+        app:cardUseCompatPadding="true"
+        tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="106dp">
 
         <LinearLayout
@@ -20,6 +21,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/newsTitleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="News" />
 
             <ImageView
                 android:id="@+id/newsImageIV"
@@ -32,9 +42,11 @@
 
             <TextView
                 android:id="@+id/newsTextTV"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:text="blablablablabla" />
         </LinearLayout>
 
