@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
     id("com.google.devtools.ksp")
+    id("androidx.navigation.safeargs.kotlin")
 
 }
 
@@ -74,5 +75,7 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.6.1")
     ksp ("androidx.room:room-compiler:2.6.1")
 
+
+    // Jsoup Dependency for Web Scraping
     implementation("org.jsoup:jsoup:1.14.3")
 }
