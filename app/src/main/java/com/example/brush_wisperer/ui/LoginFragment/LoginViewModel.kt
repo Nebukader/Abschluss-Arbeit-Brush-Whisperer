@@ -2,18 +2,18 @@ package com.example.brush_wisperer.ui.LoginFragment
 
 
 import android.app.AlertDialog
+import android.app.Application
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.Data.Model.Profile
 import com.example.brush_wisperer.R
-import com.example.brush_wisperer.RepositoryFirebase
+import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
@@ -21,7 +21,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
 
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(application: Application): AndroidViewModel(application) {
 
 
     val auth = Firebase.auth
