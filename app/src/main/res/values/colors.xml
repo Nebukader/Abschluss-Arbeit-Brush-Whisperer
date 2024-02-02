@@ -10,4 +10,7 @@
 
     <color name="blue">#459DE4</color>
     <color name="red">#FF0000</color>
+
+    <color name="green_blue">#192937</color>
+    <color name="light_purple">#161822</color>
 </resources>

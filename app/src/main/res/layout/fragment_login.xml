@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/light_purple"
     tools:context=".ui.LoginFragment.LoginFragment">
 
     <Button
@@ -12,11 +13,13 @@
         android:layout_height="48dp"
         android:layout_gravity="end"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/green_blue"
         android:text="@string/login" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/LogoIV"
         android:layout_width="240dp"
+        android:scaleType="centerCrop"
         android:layout_height="240dp"
         android:layout_gravity="center"
         android:src="@drawable/logotest" />
@@ -27,6 +30,7 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginTop="32dp"
+        android:backgroundTint="@color/green_blue"
         android:text="@string/sign_up" />
 
     <LinearLayout
@@ -45,7 +49,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="11dp"
             android:layout_marginRight="11dp"
-            android:background="@color/white"
+            android:backgroundTint="@color/green_blue"
             android:src="@drawable/google_logo" />
 
         <Button
@@ -53,8 +57,9 @@
             android:textAllCaps="false"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:background="@color/blue"
+            android:backgroundTint="@color/green_blue"
             android:text="@string/sign_in_with_google"
+
             android:textColor="@color/white"
             android:textSize="20sp" />
 
@@ -67,6 +72,7 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginTop="32dp"
+        android:backgroundTint="@color/green_blue"
         android:text="@string/skip" />
 
 </LinearLayout>
