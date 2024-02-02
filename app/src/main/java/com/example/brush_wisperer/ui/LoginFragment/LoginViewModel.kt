@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.Data.Model.Profile
 import com.example.brush_wisperer.R
@@ -21,13 +23,22 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
 
 
-class LoginViewModel(application: Application): AndroidViewModel(application) {
+class LoginViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+            return LoginViewModel(application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
 
+class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     val auth = Firebase.auth
     private val db = Firebase.firestore
     private val userDb = RepositoryFirebase()
-    private val nav = LoginFragment().findNavController()
+
+    val user = userDb.user
 
     fun signUpNewUser(username: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
@@ -61,7 +72,6 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
             userDb.loginUser(enteredEmail, enteredPassword)
             if (userDb.user != null) {
-                nav.navigate(R.id.action_loginFragment_to_homeFragment)
                 Log.d("TAG", "loginDialog: ${auth.currentUser}")
             } else {
                 Log.d("TAG", "loginDialog: ${auth.currentUser}")
@@ -73,40 +83,46 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
     }
 
+    fun signUpDialog(view: View) {
+        val builder = AlertDialog.Builder(view.context)
+        builder.setTitle("Register")
 
-    private val _user: MutableLiveData<FirebaseUser?> = MutableLiveData()
-    val user: MutableLiveData<FirebaseUser?>
-        get() = _user
+        val viewInflated: View =
+            LayoutInflater.from(view.context).inflate(R.layout.signup_login, null)
 
-    lateinit var profile: DocumentReference
+        val inputName = viewInflated.findViewById(R.id.username) as EditText
+        val inputPassword = viewInflated.findViewById(R.id.password) as EditText
+        val inputPasswordConfirm = viewInflated.findViewById(R.id.passwordConfirm) as EditText
+        val inputEmail = viewInflated.findViewById(R.id.email) as EditText
+        val inputEmailConfirm = viewInflated.findViewById(R.id.emailConfirm) as EditText
 
-    init {}
+        builder.setView(viewInflated)
 
-    fun setupUserEnv() {
-        _user.value = auth.currentUser
+        builder.setPositiveButton(R.string.Confirm) { dialog, _ ->
+            dialog.dismiss()
+            val enteredUserName = inputName.text.toString()
+            val enteredPassword = inputPassword.text.toString()
+            val enteredPasswordConfirm = inputPasswordConfirm.text.toString()
+            val enteredEmail = inputEmail.text.toString()
+            val enteredEmailConfirm = inputEmailConfirm.text.toString()
 
-        auth.currentUser?.let { firebaseUser ->
-            profile = db.collection("users").document(firebaseUser.uid)
-        }
-    }
+            if (enteredUserName == enteredUserName && enteredPassword == enteredPasswordConfirm && enteredEmail == enteredEmailConfirm){
 
-    fun register(username: String, email: String, password: String) {
+                signUpNewUser(enteredUserName,enteredEmail, enteredPassword)
 
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (it.isSuccessful) {
-                setupUserEnv()
-
-                val newProfile = Profile()
-                profile.set(newProfile)
-
-            } else {
-                //Fehler aufgetreten
+            }else{
+                Toast.makeText(view.context, android.R.string.ok, Toast.LENGTH_SHORT).show()
             }
         }
+        builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+
+        builder.show()
+
     }
 
-    fun logOut() {
-        auth.signOut()
-        setupUserEnv()
+    fun signInAnonymously(){
+        userDb.authSignInAnonymously()
     }
+
+
 }

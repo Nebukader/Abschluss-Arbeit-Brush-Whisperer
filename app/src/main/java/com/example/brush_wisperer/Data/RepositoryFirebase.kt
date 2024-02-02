@@ -1,8 +1,10 @@
 package com.example.brush_wisperer.Data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -12,12 +14,21 @@ class RepositoryFirebase {
     private val db = Firebase.firestore
     private val auth = Firebase.auth
 
-    private val _user: MutableLiveData<FirebaseUser?> = MutableLiveData()
-    val user: MutableLiveData<FirebaseUser?>
+    val _user = MutableLiveData<FirebaseUser?>(auth.currentUser)
+    val user: LiveData<FirebaseUser?>
         get() = _user
 
+    private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
 
-    fun newUser(user: HashMap<String, String>){
+        _user.postValue(auth.currentUser)
+        Log.d("TAG", "User logged in: ${user.toString()}")
+    }
+
+    fun logOut() {
+        auth.signOut()
+    }
+
+    fun newUser(user: HashMap<String, String>) {
         db.collection("users")
             .add(user)
             .addOnSuccessListener { documentReference ->
@@ -26,17 +37,31 @@ class RepositoryFirebase {
             .addOnFailureListener { e ->
                 Log.w("TAG", "Error adding document", e)
             }
+        auth.addAuthStateListener(authStateListener)
     }
 
-    fun loginUser(email: String , password:String) {
+
+    fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener{ task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("TAG", "signInWithEmail:success")
-                    _user.postValue(auth.currentUser)
                 } else {
                     Log.w("TAG", "signInWithEmail:failure", task.exception)
                 }
             }
+        auth.addAuthStateListener(authStateListener)
+    }
+
+    fun authSignInAnonymously() {
+        auth.signInAnonymously()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("TAG", "signInAnonymously:success")
+                } else {
+                    Log.e("TAG", "signInAnonymously:failure", task.exception)
+                }
+            }
+        auth.addAuthStateListener(authStateListener)
     }
 }

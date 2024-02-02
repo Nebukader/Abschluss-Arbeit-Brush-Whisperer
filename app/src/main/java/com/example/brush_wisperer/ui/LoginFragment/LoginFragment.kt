@@ -12,7 +12,9 @@ import android.widget.EditText
 import android.widget.Toast
 
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.brush_wisperer.Data.RepositoryFirebase
 
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentLoginBinding
@@ -26,22 +28,37 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginFragment : Fragment() {
 
-    private val viewModel: LoginViewModel by activityViewModels()
+    private lateinit var viewModel: LoginViewModel
     private lateinit var binding: FragmentLoginBinding
     private lateinit var client: GoogleSignInClient
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(layoutInflater)
+
+        val application = requireNotNull(this.activity).application
+        val viewModelFactory = LoginViewModelFactory(application)
+
+        viewModel = activityViewModels<LoginViewModel> { viewModelFactory }.value
+
         return binding.root
     }
 
     //Login
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.user.observe(viewLifecycleOwner, Observer {
+                user ->
+            if (user != null){
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+
+            }else{
+                findNavController().navigate(R.id.loginFragment)
+            }
+        })
 
         binding.LoginBtn.setOnClickListener {
             viewModel.loginDialog(view)
@@ -50,40 +67,7 @@ class LoginFragment : Fragment() {
 
         // Register
         binding.signupBT.setOnClickListener {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Register")
-
-            val viewInflated: View =
-                LayoutInflater.from(context).inflate(R.layout.signup_login, null)
-
-            val inputName = viewInflated.findViewById(R.id.username) as EditText
-            val inputPassword = viewInflated.findViewById(R.id.password) as EditText
-            val inputPasswordConfirm = viewInflated.findViewById(R.id.passwordConfirm) as EditText
-            val inputEmail = viewInflated.findViewById(R.id.email) as EditText
-            val inputEmailConfirm = viewInflated.findViewById(R.id.emailConfirm) as EditText
-
-            builder.setView(viewInflated)
-
-            builder.setPositiveButton(R.string.Confirm) { dialog, _ ->
-                dialog.dismiss()
-                val enteredUserName = inputName.text.toString()
-                val enteredPassword = inputPassword.text.toString()
-                val enteredPasswordConfirm = inputPasswordConfirm.text.toString()
-                val enteredEmail = inputEmail.text.toString()
-                val enteredEmailConfirm = inputEmailConfirm.text.toString()
-
-                if (enteredUserName == enteredUserName && enteredPassword == enteredPasswordConfirm && enteredEmail == enteredEmailConfirm){
-
-                    viewModel.signUpNewUser(enteredUserName,enteredEmail, enteredPassword)
-
-                }else{
-                    Toast.makeText(requireContext(),
-                        getString(R.string.passwords_or_emails_do_not_match), Toast.LENGTH_SHORT).show()
-                }
-            }
-            builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
-
-            builder.show()
+            viewModel.signUpDialog(view)
         }
 
 
@@ -100,10 +84,9 @@ class LoginFragment : Fragment() {
         }
 
         binding.skipBT.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            viewModel.signInAnonymously()
         }
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -117,7 +100,6 @@ class LoginFragment : Fragment() {
                         val user = FirebaseAuth.getInstance().currentUser
                         val email = user?.email
                         Toast.makeText(requireContext(), "${getString(R.string.login_success)} $email", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     }else{
                         Toast.makeText(requireContext(),"${getString(R.string.login_failed)}", Toast.LENGTH_SHORT).show()
                     }

@@ -13,6 +13,10 @@ class RepositoryBlogPostNews(private val database: BlogPostDatabase) {
         database.dao.insertBlogPost(news)
     }
 
+    suspend fun deleteAllNews() {
+        database.dao.deleteAllNews()
+    }
+
     fun scrapeWebPage() {
         val doc = Jsoup.connect("https://thearmypainter.com/blogs/explore").get()
         val elements = doc.select("li[role=tab] a")

@@ -1,12 +1,14 @@
 package com.example.brush_wisperer.ui.HomeFragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentHomeBinding
 import com.example.brush_wisperer.ui.Adapter.NewsAdapter
@@ -44,10 +46,9 @@ class HomeFragment : Fragment() {
 
         viewModel.news.observe(viewLifecycleOwner) { news ->
             news?.let {
-                binding.newsRecyclerView.adapter = NewsAdapter(viewModel, news)
+                binding.newsRecyclerView.adapter = NewsAdapter(it)
             }
         }
-
     }
 
 }

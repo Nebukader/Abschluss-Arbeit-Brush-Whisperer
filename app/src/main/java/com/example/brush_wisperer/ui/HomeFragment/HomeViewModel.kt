@@ -36,6 +36,11 @@ class HomeViewModel (application: Application): AndroidViewModel(application) {
 
         }
     }
+    fun deleteAllNews(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllNews()
+        }
+    }
 }
 
 
