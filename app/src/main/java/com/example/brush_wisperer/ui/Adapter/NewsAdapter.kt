@@ -33,7 +33,7 @@ class NewsAdapter(
 
         binding.newsTitleTV.text = newsData[position].title
         binding.newsImageIV.load(blogPosts[position].image)
-        binding.newsTextTV.text = newsData[position].title
+        binding.newsTextTV.text = newsData[position].newsContent
         val postLink = newsData[position].postLink
 
         binding.newsCV.setOnClickListener{
