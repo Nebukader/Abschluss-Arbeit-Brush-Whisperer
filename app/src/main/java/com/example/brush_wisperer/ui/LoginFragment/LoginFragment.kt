@@ -54,9 +54,6 @@ class LoginFragment : Fragment() {
                 user ->
             if (user != null){
                 findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-
-            }else{
-                findNavController().navigate(R.id.loginFragment)
             }
         })
 

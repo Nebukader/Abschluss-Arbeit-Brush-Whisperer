@@ -13,4 +13,5 @@
 
     <color name="green_blue">#2B465E</color>
     <color name="light_purple">#161822</color>
+    <color name="system_primary">#FF6200EE</color>
 </resources>
