@@ -1,21 +1,15 @@
 package com.example.brush_wisperer.ui.LoginFragment
 
-import android.app.AlertDialog
 import android.content.Intent
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
-
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.brush_wisperer.Data.RepositoryFirebase
-
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -53,17 +47,20 @@ class LoginFragment : Fragment() {
         viewModel.user.observe(viewLifecycleOwner, Observer {
                 user ->
             if (user != null){
-                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                findNavController().navigate(R.id.homeFragment)
             }
         })
 
-        binding.LoginBtn.setOnClickListener {
-            viewModel.loginDialog(view)
+        binding.loginButton.setOnClickListener {
+            viewModel.loginDialog(
+                binding.emailEditText.text.toString(),
+                binding.passwordEditText.text.toString()
+            )
         }
 
 
         // Register
-        binding.signupBT.setOnClickListener {
+        binding.signUp.setOnClickListener {
             viewModel.signUpDialog(view)
         }
 
@@ -75,14 +72,14 @@ class LoginFragment : Fragment() {
             .build()
         client = GoogleSignIn.getClient(requireContext(), option)
 
-        binding.signInGoogleBtn.setOnClickListener {
+        binding.signInWithGoogle.setOnClickListener {
             val intent = client.signInIntent
             startActivityForResult(intent, 10001)
         }
 
-        binding.skipBT.setOnClickListener {
-            viewModel.signInAnonymously()
-        }
+        //binding.skipBT.setOnClickListener {
+        //    viewModel.signInAnonymously()
+        //}
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -101,9 +98,8 @@ class LoginFragment : Fragment() {
                         Toast.makeText(requireContext(),"${getString(R.string.login_failed)}", Toast.LENGTH_SHORT).show()
                     }
                 }
+            viewModel.updateCurrentUser()
         }
     }
-
-
 
 }
