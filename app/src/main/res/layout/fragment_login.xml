@@ -1,76 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background=""
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg1"
     tools:context=".ui.LoginFragment.LoginFragment">
 
-    <Button
-        android:id="@+id/LoginBtn"
-        android:layout_width="80dp"
-        android:layout_height="48dp"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
-        android:text="@string/login" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/LogoIV"
-        android:layout_width="240dp"
-        android:scaleType="centerCrop"
-        android:layout_height="240dp"
-        android:layout_gravity="center"
-        android:src="@drawable/logotest" />
-
-    <Button
-        android:id="@+id/signupBT"
-        android:layout_width="120dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:text="@string/sign_up" />
-
-    <LinearLayout
-        android:layout_centerInParent="true"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/border"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginLeft="11dp"
-            android:layout_marginRight="11dp"
-            android:backgroundTint="@color/green_blue"
-            android:src="@drawable/google_logo" />
+            android:id="@+id/logoImageView"
+            android:paddingTop="28dp"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_bw"
+            android:layout_centerHorizontal="true"/>
 
-        <Button
-            android:id="@+id/signInGoogleBtn"
-            android:textAllCaps="false"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/green_blue"
-            android:text="@string/sign_in_with_google"
-
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/logoImageView"
+            android:text="Whisperer"
+            android:outlineAmbientShadowColor="@color/black"
+            android:textSize="36sp"
+            android:shadowColor="@color/black"
+            android:shadowRadius="10"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
 
-    </LinearLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:cardCornerRadius="28dp"
+        android:layout_marginBottom="-20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="28dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/design_default_color_primary"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign in to continue"
+                android:textSize="16sp"
+                android:alpha="0.7"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email Adress"
+                android:alpha="0.7"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textWebEmailAddress"
+                android:drawableEnd="@drawable/done_icon"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:alpha="0.7"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:drawableEnd="@drawable/password_icon"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/signUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Don't have an account?"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/design_default_color_primary"
+                    android:alpha="0.7"/>
+
+                <TextView
+                    android:id="@+id/forgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Forgot Password?"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerVertical="true"
+                    android:alpha="0.7"
+                    android:textColor="@color/lightRed"/>
+
+            </RelativeLayout>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Login"
+                app:cornerRadius="32dp"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="or Login with"
+                android:layout_gravity="center"
+                android:alpha="0.7"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/signInWithGoogle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/google_icon"
+                    android:layout_margin="10dp"/>
+                <ImageView
+                    android:id="@+id/signInWithFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/facebook_icon"
+                    android:layout_margin="10dp"/>
+                <ImageView
+                    android:id="@+id/signInWithGithub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/github_icon"
+                    android:layout_margin="10dp"/>
+
+            </LinearLayout>
 
 
-    <Button
-        android:id="@+id/skipBT"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/green_blue"
-        android:text="@string/skip" />
 
-</LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    
+
+
+
+
+
+</RelativeLayout>
+
+
