@@ -54,34 +54,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun loginDialog(context: View) {
-        val builder = AlertDialog.Builder(context.context)
-        builder.setTitle("Login")
+    fun loginDialog(enteredEmail: String, enteredPassword: String) {
 
-        val viewInflated: View =
-            LayoutInflater.from(context.context).inflate(R.layout.login_popup_dialog, null)
-        val inputEmail = viewInflated.findViewById(R.id.username) as EditText
-        val inputPassword = viewInflated.findViewById(R.id.password) as EditText
-
-        builder.setView(viewInflated)
-
-        builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
-            dialog.dismiss()
-            val enteredEmail = inputEmail.text.toString()
-            val enteredPassword = inputPassword.text.toString()
-
-            userDb.loginUser(enteredEmail, enteredPassword)
-            if (userDb.user != null) {
-                Log.d("TAG", "loginDialog: ${auth.currentUser}")
-            } else {
-                Log.d("TAG", "loginDialog: ${auth.currentUser}")
-            }
+        userDb.loginUser(enteredEmail, enteredPassword)
+        if (userDb.user != null) {
+            Log.d("TAG", "loginDialog: ${auth.currentUser}")
+        } else {
+            Log.d("TAG", "loginDialog: ${auth.currentUser}")
         }
-        builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
-
-        builder.show()
-
     }
+
 
     fun signUpDialog(view: View) {
         val builder = AlertDialog.Builder(view.context)
@@ -106,23 +88,24 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             val enteredEmail = inputEmail.text.toString()
             val enteredEmailConfirm = inputEmailConfirm.text.toString()
 
-            if (enteredUserName == enteredUserName && enteredPassword == enteredPasswordConfirm && enteredEmail == enteredEmailConfirm){
+            if (enteredUserName == enteredUserName && enteredPassword == enteredPasswordConfirm && enteredEmail == enteredEmailConfirm) {
 
-                signUpNewUser(enteredUserName,enteredEmail, enteredPassword)
+                signUpNewUser(enteredUserName, enteredEmail, enteredPassword)
 
-            }else{
+            } else {
                 Toast.makeText(view.context, android.R.string.ok, Toast.LENGTH_SHORT).show()
             }
         }
         builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
 
         builder.show()
-
     }
 
-    fun signInAnonymously(){
+    fun signInAnonymously() {
         userDb.authSignInAnonymously()
     }
 
-
+    fun updateCurrentUser() {
+        userDb._user.postValue(auth.currentUser)
+    }
 }
