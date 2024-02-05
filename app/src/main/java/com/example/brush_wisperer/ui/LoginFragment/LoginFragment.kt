@@ -1,6 +1,6 @@
 package com.example.brush_wisperer.ui.LoginFragment
 
-import MainActivity
+import com.example.brush_wisperer.MainActivity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment

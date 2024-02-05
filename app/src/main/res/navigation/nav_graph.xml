@@ -33,4 +33,9 @@
             android:name="postLink"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/categorieFragment"
+        android:name="com.example.brush_wisperer.ui.ColourFragment.CategorieFragment"
+        android:label="fragment_categorie"
+        tools:layout="@layout/fragment_categorie" />
 </navigation>
