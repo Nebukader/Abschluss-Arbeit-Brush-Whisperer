@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.brush_wisperer.MainActivity
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -47,9 +48,12 @@ class LoginFragment : Fragment() {
         viewModel.user.observe(viewLifecycleOwner, Observer {
                 user ->
             if (user != null){
+                (activity as MainActivity).showBottomNav(View.VISIBLE)
                 findNavController().navigate(R.id.homeFragment)
             }
         })
+
+
 
         binding.loginButton.setOnClickListener {
             viewModel.loginDialog(
@@ -57,6 +61,7 @@ class LoginFragment : Fragment() {
                 binding.passwordEditText.text.toString()
             )
         }
+
 
 
         // Register
