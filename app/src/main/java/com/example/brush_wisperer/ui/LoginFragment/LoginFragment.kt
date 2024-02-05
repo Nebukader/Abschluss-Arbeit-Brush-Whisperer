@@ -1,5 +1,6 @@
 package com.example.brush_wisperer.ui.LoginFragment
 
+import MainActivity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +11,6 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.brush_wisperer.MainActivity
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
