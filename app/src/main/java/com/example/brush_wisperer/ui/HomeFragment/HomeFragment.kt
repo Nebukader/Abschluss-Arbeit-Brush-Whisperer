@@ -35,7 +35,9 @@ class HomeFragment : Fragment() {
 
 
         binding.dataBT.setOnClickListener {
-            viewModel.insertNews()
+            //viewModel.insertNews()
+            //testViewModel.loadData()
+
         }
 
         val user = FirebaseAuth.getInstance().currentUser
