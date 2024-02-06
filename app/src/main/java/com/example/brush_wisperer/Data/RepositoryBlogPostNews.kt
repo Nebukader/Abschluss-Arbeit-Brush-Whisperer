@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.brush_wisperer.Data.Local.Model.BlogPostEntity
 import com.example.brush_wisperer.Data.Local.Model.Database.BlogPostDatabase
 import org.jsoup.Jsoup
+import java.time.LocalDate
 
 class RepositoryBlogPostNews(private val database: BlogPostDatabase) {
 
@@ -25,8 +26,6 @@ class RepositoryBlogPostNews(private val database: BlogPostDatabase) {
             Log.d("TAG", "Post link: $postLink")
         }
     }
-
-
     fun scrapeBlogPost(postLink: String): List<BlogPostEntity> {
         val doc = Jsoup.connect("https://thearmypainter.com$postLink").get()
         val blogPost = doc.select("blog-post-card")
@@ -40,13 +39,14 @@ class RepositoryBlogPostNews(private val database: BlogPostDatabase) {
             val processedPostLink = "https://thearmypainter.com$postLink"
 
             val processedImageLink = "https:${image.substringAfter("Image: ").substringBefore("?") }"
-
+            val date = LocalDate.now().toString()
             val news = BlogPostEntity(
                 0,
                 title,
                 processedImageLink,
                 text,
-                processedPostLink
+                processedPostLink,
+                date
             )
             blogPostEntities.add(news)
             Log.d("TAG", "PostLink : $postLink")

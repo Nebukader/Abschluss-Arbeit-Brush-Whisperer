@@ -20,4 +20,5 @@ data class ColourEntity(
     val hexcode: String,
     @ColumnInfo(name = "picture")
     val picture: String,
+
 )

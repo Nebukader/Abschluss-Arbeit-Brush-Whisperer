@@ -37,7 +37,17 @@ class RepositoryFirebase {
             .addOnFailureListener { e ->
                 Log.w("TAG", "Error adding document", e)
             }
-        auth.addAuthStateListener(authStateListener)
+        //auth.addAuthStateListener(authStateListener)
+    }
+    private fun sendVerificationEmail() {
+        val user = auth.currentUser
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("TAG", "Verification email sent to ${user.email}")
+                }else
+                    Log.w("TAG", "Error sending verification email", task.exception)
+            }
     }
 
 

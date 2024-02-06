@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
-    android:delay="@integer/material_motion_duration_medium_1"
+    android:delay="50%"
     android:animationOrder="normal"
     android:animation="@anim/slide_in"
     >

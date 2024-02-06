@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.viewModels
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentColourRangesAndColourListBinding
@@ -51,6 +52,13 @@ class ColourRangesAndColourListFragment : Fragment() {
         }
         viewModel.colourList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+
+            //Starten der Animation beim ersten Laden
+            val context = binding.colourRangesAndColourListRV.context
+            val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
+
+            binding.colourRangesAndColourListRV.layoutAnimation = controller
+            binding.colourRangesAndColourListRV.scheduleLayoutAnimation()
         }
     }
 

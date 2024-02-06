@@ -20,8 +20,8 @@ class ColourListAdapter (
         colourList = list
         notifyDataSetChanged()
     }
- class ItemViewHolder(val binding: ColourItemBinding) :
-     RecyclerView.ViewHolder(binding.root)
+    class ItemViewHolder(val binding: ColourItemBinding) :
+    RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ColourItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -36,7 +36,6 @@ class ColourListAdapter (
         val colorStateList = ColorStateList.valueOf(color)
         binding.colourShapeIV.imageTintList =colorStateList
         binding.colourNameTV.text = colourData[position].colour_name
-
 
     }
 

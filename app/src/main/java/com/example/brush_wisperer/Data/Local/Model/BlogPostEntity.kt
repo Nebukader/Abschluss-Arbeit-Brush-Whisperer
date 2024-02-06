@@ -15,5 +15,7 @@ data class BlogPostEntity(
     @ColumnInfo(name = "newsContent")
     val newsContent: String,
     @ColumnInfo(name = "postLink")
-    val postLink: String
+    val postLink: String,
+    @ColumnInfo(name = "date")
+    val date: String
 )

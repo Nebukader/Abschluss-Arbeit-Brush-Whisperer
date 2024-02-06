@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.Data.Model.Profile
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.Data.RepositoryFirebase
+import com.example.brush_wisperer.MainViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
@@ -37,10 +38,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val auth = Firebase.auth
     private val db = Firebase.firestore
     private val userDb = RepositoryFirebase()
+    private val mainViewModel = MainViewModel(application)
 
     val user = userDb.user
 
-    fun signUpNewUser(username: String, email: String, password: String) {
+    fun signUpNewUserWithEmail(username: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val user = hashMapOf(
@@ -48,8 +50,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     "email" to email
                 )
                 userDb.newUser(user)
-            } else {
-                Log.w("TAG", "createUserWithEmail:failure", task.exception)
+
+                auth.currentUser?.sendEmailVerification()?.addOnCompleteListener { emailTask ->
+                    if (emailTask.isSuccessful) {
+                        mainViewModel.showToastAtTop(getApplication(), "Verification email sent to $email")
+                    } else {
+                        Log.w("TAG", "Error sending email verification", emailTask.exception)
+                    }
+                }
+            }else {
+                Log.w("TAG", "createUserWithEmail:failed", task.exception)
             }
         }
     }
@@ -63,7 +73,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             Log.d("TAG", "loginDialog: ${auth.currentUser}")
         }
     }
-
 
     fun signUpDialog(view: View) {
         val builder = AlertDialog.Builder(view.context)
@@ -90,7 +99,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
             if (enteredUserName == enteredUserName && enteredPassword == enteredPasswordConfirm && enteredEmail == enteredEmailConfirm) {
 
-                signUpNewUser(enteredUserName, enteredEmail, enteredPassword)
+                signUpNewUserWithEmail(enteredUserName, enteredEmail, enteredPassword)
 
             } else {
                 Toast.makeText(view.context, android.R.string.ok, Toast.LENGTH_SHORT).show()
