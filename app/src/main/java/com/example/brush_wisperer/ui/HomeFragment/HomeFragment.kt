@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
 
         viewModel.news.observe(viewLifecycleOwner) { news ->
             news?.let {
-                binding.newsRecyclerView.adapter = NewsAdapter(it)
+                binding.newsRV.adapter = NewsAdapter(it)
             }
         }
     }
