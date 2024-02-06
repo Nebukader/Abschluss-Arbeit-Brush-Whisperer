@@ -37,5 +37,14 @@
         android:id="@+id/categorieFragment"
         android:name="com.example.brush_wisperer.ui.ColourFragment.CategorieFragment"
         android:label="fragment_categorie"
-        tools:layout="@layout/fragment_categorie" />
+        tools:layout="@layout/fragment_categorie" >
+        <action
+            android:id="@+id/action_categorieFragment_to_colourRangesAndColourListFragment"
+            app:destination="@id/colourRangesAndColourListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/colourRangesAndColourListFragment"
+        android:name="com.example.brush_wisperer.ui.ColourFragment.ColourRangesAndColourListFragment"
+        android:label="fragment_colour_ranges_and_colour_list"
+        tools:layout="@layout/fragment_colour_ranges_and_colour_list" />
 </navigation>
