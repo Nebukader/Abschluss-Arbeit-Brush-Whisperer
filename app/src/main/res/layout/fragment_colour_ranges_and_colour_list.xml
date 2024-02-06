@@ -70,8 +70,29 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/colour_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layoutAnimation="@anim/layout_animation"
+        >
 
-        />
+        <ProgressBar
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:indeterminate="true"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_centerInParent="true" />
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:id="@+id/noDataIV"
+            android:visibility="gone"
+            android:src="@drawable/ic_no_data" />
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 
