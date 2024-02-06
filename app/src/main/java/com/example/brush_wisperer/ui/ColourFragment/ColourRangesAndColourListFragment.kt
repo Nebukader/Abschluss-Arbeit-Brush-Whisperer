@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentColourRangesAndColourListBinding
+import com.example.brush_wisperer.ui.Adapter.ColourListAdapter
 
 
 class ColourRangesAndColourListFragment : Fragment() {
@@ -28,9 +29,11 @@ class ColourRangesAndColourListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = binding.colourRV
-        //val adapter = ColourListAdapter()
-        //ecyclerView.adapter = adapter
+        val adapter = ColourListAdapter(emptyList())
+        val recyclerView = binding.colourRangesAndColourListRV
+
+        recyclerView.adapter = adapter
+
 
         viewModel.loading.observe(viewLifecycleOwner) {
             when (it) {
@@ -45,6 +48,9 @@ class ColourRangesAndColourListFragment : Fragment() {
                     binding.noDataIV.visibility = View.GONE
                 }
             }
+        }
+        viewModel.colourList.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
         }
     }
 
