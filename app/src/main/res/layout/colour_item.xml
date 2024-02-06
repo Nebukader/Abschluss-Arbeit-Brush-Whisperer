@@ -17,13 +17,17 @@
             android:orientation="horizontal">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/colour_shapeIV"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:src="@drawable/itemtest" />
+            android:tint="@color/blue"
+            app:srcCompat="@drawable/colour_item_list_shape"
+             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/colour_nameTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -31,12 +35,14 @@
             android:textSize="18sp" />
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/colour_itemIV"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:src="@drawable/itemtest" />
 
         <ImageView
+            android:id="@+id/colour_wishlistIV"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
@@ -44,6 +50,7 @@
             android:src="@drawable/wishlist" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/colour_addToCollectionBtn"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
