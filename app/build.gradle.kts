@@ -80,4 +80,8 @@ dependencies {
 
     // Jsoup Dependency for Web Scraping
     implementation("org.jsoup:jsoup:1.14.3")
+
+    //SwipeToRefresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
 }
