@@ -1,6 +1,7 @@
 package com.example.brush_wisperer.Data.Remote
 
-import com.example.brush_wisperer.Data.Model.ColourData
+import com.example.brush_wisperer.Data.Local.Model.ColourEntity
+import com.example.brush_wisperer.Data.Model.ColourList
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -26,7 +27,7 @@ interface ColourApiService {
      * Diese Funktion spezifiziert die URL und holt die Liste an Informationen
      */
     @GET("readAll.php")
-    suspend fun readAll(): List<ColourData>
+    suspend fun readAll(): List<ColourEntity>
 
 }
 
