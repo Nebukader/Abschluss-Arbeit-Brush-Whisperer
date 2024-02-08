@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentHomeDetailBinding
+import kotlinx.coroutines.coroutineScope
 
 class HomeDetailFragment : Fragment() {
     private val args: HomeDetailFragmentArgs by navArgs()
@@ -26,7 +27,6 @@ class HomeDetailFragment : Fragment() {
 
         val binding = FragmentHomeDetailBinding.bind(view)
         binding.webView.loadUrl(args.postLink)
-
-
     }
+
 }

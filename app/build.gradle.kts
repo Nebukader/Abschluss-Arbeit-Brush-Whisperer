@@ -84,6 +84,9 @@ dependencies {
     //SwipeToRefresh
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
+    //BlurView
+    implementation("com.github.furkankaplan:fk-blur-view-android:1.0.1")
+
     //Worker
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 

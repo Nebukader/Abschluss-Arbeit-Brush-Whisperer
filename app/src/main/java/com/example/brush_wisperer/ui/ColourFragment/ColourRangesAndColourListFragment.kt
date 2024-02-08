@@ -1,6 +1,10 @@
 package com.example.brush_wisperer.ui.ColourFragment
 
+import android.graphics.BitmapFactory
+import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +36,13 @@ class ColourRangesAndColourListFragment : Fragment() {
 
         val adapter = ColourListAdapter(emptyList())
         val recyclerView = binding.colourRangesAndColourListRV
+
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.bg_purple_dust)
+        val drawable = BitmapDrawable(resources, bitmap)
+        drawable.gravity = Gravity.CENTER
+        drawable.setTileModeXY(Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+        binding.root.background = drawable
+
 
         recyclerView.adapter = adapter
 

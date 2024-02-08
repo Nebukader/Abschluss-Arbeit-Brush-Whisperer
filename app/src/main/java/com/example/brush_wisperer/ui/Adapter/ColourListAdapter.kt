@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.brush_wisperer.Data.Local.Model.ColourEntity
 import com.example.brush_wisperer.databinding.ColourItemBinding
+import com.github.furkankaplan.fkblurview.FKBlurView
 
 class ColourListAdapter (
     private var colourList: List<ColourEntity>
@@ -34,6 +35,7 @@ class ColourListAdapter (
 
         val color = Color.parseColor(colourData[position].hexcode)
         val colorStateList = ColorStateList.valueOf(color)
+
         binding.colourShapeIV.imageTintList =colorStateList
         binding.colourNameTV.text = colourData[position].colour_name
 
