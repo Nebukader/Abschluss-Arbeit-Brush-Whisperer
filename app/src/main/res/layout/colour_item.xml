@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <FrameLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/blurView"
         app:cardCornerRadius="8dp"
-        app:cardElevation="8dp"
-        style="@style/CardView.">
+        app:cardElevation="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,17 +26,16 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:tint="@color/blue"
             app:srcCompat="@drawable/colour_item_list_shape"
              />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/colour_nameTV"
             android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
+            android:padding="8dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/white"
             android:text="Colour Name"
             android:textSize="18sp" />
 
@@ -50,23 +47,25 @@
             android:layout_gravity="center"
             android:src="@drawable/itemtest" />
 
-        <ImageView
-            android:id="@+id/colour_wishlistIV"
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="50dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
             android:layout_gravity="center"
-            android:src="@drawable/wishlist" />
+            android:text="-"
+            android:textSize="24sp"
+            app:cornerRadius="40dp"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/colour_addToCollectionBtn"
             android:layout_weight="1"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:text="+"
             android:textSize="24sp"
             app:cornerRadius="40dp" />
         </LinearLayout>
-    </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

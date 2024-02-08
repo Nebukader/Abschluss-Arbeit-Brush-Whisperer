@@ -20,13 +20,15 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
 
-        <com.google.android.material.search.SearchBar
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:contentDescription="Search for a colour"
             android:hint="Search for a colour">
 
-        </com.google.android.material.search.SearchBar>
+        </androidx.appcompat.widget.SearchView>
 
     </LinearLayout>
 
@@ -66,12 +68,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/colourRangesAndColourListRV"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:padding="8dp"
         android:layoutAnimation="@anim/layout_animation"
-        android:scrollbars="vertical"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/colour_item" />

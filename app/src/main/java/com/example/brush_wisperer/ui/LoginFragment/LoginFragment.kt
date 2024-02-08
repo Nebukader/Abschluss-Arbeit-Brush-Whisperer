@@ -99,11 +99,12 @@ class LoginFragment : Fragment() {
                         val user = FirebaseAuth.getInstance().currentUser
                         val email = user?.email
                         Toast.makeText(requireContext(), "${getString(R.string.login_success)} $email", Toast.LENGTH_SHORT).show()
+                        viewModel.updateCurrentUser()
                     }else{
                         Toast.makeText(requireContext(),"${getString(R.string.login_failed)}", Toast.LENGTH_SHORT).show()
                     }
                 }
-            viewModel.updateCurrentUser()
+
         }
     }
 

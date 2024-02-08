@@ -21,17 +21,15 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:labelVisibilityMode="selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menue"
-        app:labelVisibilityMode="labeled"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="1.0" />
+        style="@style/Widget.Material3.BottomNavigationView"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
+        app:menu="@menu/bottom_nav_menue" />
 
 
 

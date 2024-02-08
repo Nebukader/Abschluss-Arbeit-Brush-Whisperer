@@ -20,19 +20,16 @@
             android:src="@drawable/logo_bw"
             android:layout_centerHorizontal="true"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/logoImageView"
             android:text="Whisperer"
-            android:outlineAmbientShadowColor="@color/black"
             android:textSize="36sp"
-            android:shadowColor="@color/black"
             android:shadowRadius="10"
             android:shadowDx="3"
             android:shadowDy="3"
             android:textStyle="bold"
-            android:textColor="@color/white"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
@@ -114,7 +111,7 @@
                     android:textColor="@color/design_default_color_primary"
                     android:alpha="0.7"/>
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/forgotPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -122,8 +119,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="10dp"
                     android:layout_centerVertical="true"
-                    android:alpha="0.7"
-                    android:textColor="@color/lightRed"/>
+                    android:alpha="0.7" />
 
             </RelativeLayout>
             <View

@@ -26,6 +26,7 @@ class RepositoryFirebase {
 
     fun logOut() {
         auth.signOut()
+        _user.postValue(null)
     }
 
     fun newUser(user: HashMap<String, String>) {

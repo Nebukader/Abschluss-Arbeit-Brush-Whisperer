@@ -117,4 +117,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     fun updateCurrentUser() {
         userDb._user.postValue(auth.currentUser)
     }
+
+    fun logOut() {
+        userDb.logOut()
+    }
 }

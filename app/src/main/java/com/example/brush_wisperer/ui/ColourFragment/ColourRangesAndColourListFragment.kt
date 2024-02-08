@@ -1,19 +1,16 @@
 package com.example.brush_wisperer.ui.ColourFragment
 
-import android.graphics.BitmapFactory
-import android.graphics.Shader
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentColourRangesAndColourListBinding
 import com.example.brush_wisperer.ui.Adapter.ColourListAdapter
+import androidx.appcompat.widget.SearchView
 
 
 class ColourRangesAndColourListFragment : Fragment() {
@@ -37,15 +34,7 @@ class ColourRangesAndColourListFragment : Fragment() {
         val adapter = ColourListAdapter(emptyList())
         val recyclerView = binding.colourRangesAndColourListRV
 
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.bg_purple_dust)
-        val drawable = BitmapDrawable(resources, bitmap)
-        drawable.gravity = Gravity.CENTER
-        drawable.setTileModeXY(Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-        binding.root.background = drawable
-
-
         recyclerView.adapter = adapter
-
 
         viewModel.loading.observe(viewLifecycleOwner) {
             when (it) {
@@ -70,7 +59,21 @@ class ColourRangesAndColourListFragment : Fragment() {
 
             binding.colourRangesAndColourListRV.layoutAnimation = controller
             binding.colourRangesAndColourListRV.scheduleLayoutAnimation()
+
+            val searchBar = binding.searchBar as SearchView
+
+            searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    adapter.filter(newText ?: "")
+                    return true
+                }
+            })
         }
+
     }
 
 }
