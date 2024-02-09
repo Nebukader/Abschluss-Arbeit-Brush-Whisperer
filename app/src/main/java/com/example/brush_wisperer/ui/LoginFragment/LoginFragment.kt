@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentLoginBinding
@@ -41,9 +42,20 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+
     //Login
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //verify if user email is verified
+        viewModel =  ViewModelProvider(this).get(LoginViewModel::class.java)
+        viewModel.navigateToVerification.observe(viewLifecycleOwner, Observer {
+            if (it){
+                findNavController().navigate(R.id.action_loginFragment_to_verificationFragment)
+                viewModel.navigateToVerification.value = false
+            }
+        })
+
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
                 user ->

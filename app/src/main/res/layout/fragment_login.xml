@@ -23,15 +23,15 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
             android:layout_alignBottom="@id/logoImageView"
-            android:text="Whisperer"
-            android:textSize="36sp"
-            android:shadowRadius="10"
+            android:layout_centerInParent="true"
             android:shadowDx="3"
             android:shadowDy="3"
-            android:textStyle="bold"
-            android:layout_centerHorizontal="true"
-            android:layout_centerInParent="true"/>
+            android:shadowRadius="10"
+            android:text="Whisperer"
+            android:textSize="36sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView

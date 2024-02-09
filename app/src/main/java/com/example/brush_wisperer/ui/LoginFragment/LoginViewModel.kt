@@ -39,13 +39,19 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val db = Firebase.firestore
     private val userDb = RepositoryFirebase()
     private val mainViewModel = MainViewModel(application)
+    val navigateToVerification = MutableLiveData<Boolean>()
+
 
     val user = userDb.user
 
     fun signUpNewUserWithEmail(username: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                val user = auth.currentUser
+                user?.let {
+                val userId = user.uid
                 val user = hashMapOf(
+                    "uid" to userId,
                     "username" to username,
                     "email" to email
                 )
@@ -54,9 +60,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 auth.currentUser?.sendEmailVerification()?.addOnCompleteListener { emailTask ->
                     if (emailTask.isSuccessful) {
                         mainViewModel.showToastAtTop(getApplication(), "Verification email sent to $email")
+                        navigateToVerification.value = true
                     } else {
                         Log.w("TAG", "Error sending email verification", emailTask.exception)
                     }
+                }
                 }
             }else {
                 Log.w("TAG", "createUserWithEmail:failed", task.exception)

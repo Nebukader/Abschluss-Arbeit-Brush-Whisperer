@@ -26,6 +26,7 @@ class RepositoryBlogPostNews(private val database: BlogPostDatabase) {
             Log.d("TAG", "Post link: $postLink")
         }
     }
+
     fun scrapeBlogPost(postLink: String): List<BlogPostEntity> {
         val doc = Jsoup.connect("https://thearmypainter.com$postLink").get()
         val blogPost = doc.select("blog-post-card")

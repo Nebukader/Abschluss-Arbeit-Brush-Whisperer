@@ -5,15 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentColourRangesAndColourListBinding
 import com.example.brush_wisperer.ui.Adapter.ColourListAdapter
 import androidx.appcompat.widget.SearchView
+import com.example.brush_wisperer.Data.Local.Model.ColourEntity
+import com.example.brush_wisperer.Data.Model.ColourList
+import java.util.Locale
 
 
 class ColourRangesAndColourListFragment : Fragment() {
+
+    private val colourItemList = ArrayList<ColourList>()
 
     private val viewModel: ColourViewModel by viewModels()
     private lateinit var binding: FragmentColourRangesAndColourListBinding
@@ -60,15 +66,30 @@ class ColourRangesAndColourListFragment : Fragment() {
             binding.colourRangesAndColourListRV.layoutAnimation = controller
             binding.colourRangesAndColourListRV.scheduleLayoutAnimation()
 
-            val searchBar = binding.searchBar as SearchView
+            val searchView = binding.searchBar
 
-            searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    adapter.filter(newText ?: "")
+
+                    val searchList = ArrayList<ColourEntity>()
+
+                    if (newText != null) {
+                        for (item in viewModel.colourList.value!!) {
+                            val lowerCaseNewText = newText.lowercase(Locale.ROOT)
+                            if (item.colour_name.lowercase(Locale.ROOT).contains(lowerCaseNewText)) {
+                                searchList.add(item)
+                            }
+                        }
+                        if (searchList.isEmpty()){
+                            Toast.makeText(context, "No Colour found", Toast.LENGTH_SHORT).show()
+                        }else{
+                            adapter.onApplySearch(searchList)
+                        }
+                    }
                     return true
                 }
             })

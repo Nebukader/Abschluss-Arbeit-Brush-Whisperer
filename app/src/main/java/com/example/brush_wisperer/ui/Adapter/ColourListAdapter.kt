@@ -10,6 +10,7 @@ import coil.load
 import com.example.brush_wisperer.Data.Local.Model.ColourEntity
 import com.example.brush_wisperer.databinding.ColourItemBinding
 class ColourListAdapter (
+
     private var colourList: List<ColourEntity>
 
 ) : RecyclerView.Adapter<ColourListAdapter.ItemViewHolder>() {
@@ -40,14 +41,12 @@ class ColourListAdapter (
         binding.colourItemIV.load(image)
 
     }
-    fun filter(query:String){
-        val lowerCaseQuery = query.lowercase()
+    fun onApplySearch(colourList: List<ColourEntity>){
 
-        val filteredList = colourList.filter {
-            it.colour_name.lowercase().contains(lowerCaseQuery)
-        }
-        submitList(filteredList)
+        this.colourList = colourList
+        notifyDataSetChanged()
     }
+
 
     override fun getItemCount() = colourList.size
 }
