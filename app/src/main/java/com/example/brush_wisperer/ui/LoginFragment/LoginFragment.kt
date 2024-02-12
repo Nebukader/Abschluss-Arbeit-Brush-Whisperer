@@ -60,8 +60,8 @@ class LoginFragment : Fragment() {
         viewModel.user.observe(viewLifecycleOwner, Observer {
                 user ->
             if (user != null){
-                (activity as MainActivity).showBottomNav(View.VISIBLE)
                 findNavController().navigate(R.id.homeFragment)
+                val toolbar = (activity as MainActivity).showToolBarIcon(View.VISIBLE)
             }
         })
 
