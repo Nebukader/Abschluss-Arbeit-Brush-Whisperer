@@ -1,6 +1,8 @@
 package com.example.brush_wisperer.ui.ColourFragment
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,7 @@ import com.example.brush_wisperer.databinding.FragmentColourRangesAndColourListB
 import com.example.brush_wisperer.ui.Adapter.ColourListAdapter
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.*
+import androidx.lifecycle.Observer
 import com.example.brush_wisperer.Data.Local.Model.ColourEntity
 import com.example.brush_wisperer.Data.Model.ColourList
 import java.util.Locale
