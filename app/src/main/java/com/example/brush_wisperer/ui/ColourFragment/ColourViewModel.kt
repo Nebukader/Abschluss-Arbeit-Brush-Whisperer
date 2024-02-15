@@ -28,9 +28,9 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
 
     val colourList = repository.colourList
 
-    //init {
-    //    loadData()
-   //}
+    init {
+    loadData()
+   }
 
     private fun loadData() {
         viewModelScope.launch {
@@ -92,4 +92,5 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
             repository.updateFavourite(id, isFavorite)
         }
     }
+
 }
