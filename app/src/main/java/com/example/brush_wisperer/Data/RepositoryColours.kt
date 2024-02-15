@@ -31,8 +31,4 @@ class RepositoryColours(private val database: ColourDatabase,private val colourA
     suspend fun updateFavourite(id: Int, isFavorite: Boolean) {
         database.dao.updateFavourite(id, isFavorite)
     }
-
-    suspend fun deleteAllColours() {
-        database.dao.deleteAllColours()
-    }
 }
