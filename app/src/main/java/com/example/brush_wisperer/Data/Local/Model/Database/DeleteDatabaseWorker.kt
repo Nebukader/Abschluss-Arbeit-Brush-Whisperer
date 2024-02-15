@@ -11,8 +11,8 @@ class DeleteDatabaseWorker(appContext: Context,workerParams: WorkerParameters)
 
         override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
             try {
-                val database = ColourDatabaseInstance.getDatabase(applicationContext)
-                database.dao.deleteAllColours()
+                val database = BlogPostDatabaseInstance.getDatabase(applicationContext)
+                database.dao.deleteAllNews()
                 Result.success()
             } catch (e: Exception) {
                 Result.retry()
