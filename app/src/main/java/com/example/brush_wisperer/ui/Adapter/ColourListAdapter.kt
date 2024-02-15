@@ -11,7 +11,6 @@ import com.example.brush_wisperer.Data.Local.Model.ColourEntity
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.ColourItemBinding
 import com.example.brush_wisperer.ui.ColourFragment.ColourViewModel
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 
 class ColourListAdapter (
@@ -46,9 +45,15 @@ class ColourListAdapter (
         val image = "http://dockerpi/back/${colourData[position].picture}"
         binding.colourItemIV.load(image)
 
+        if (colourData[position].isFavorite) {
+            binding.colourAddToCollectionBtn.setImageResource(R.drawable.favorit_selected)
+        } else {
+            binding.colourAddToCollectionBtn.setImageResource(R.drawable.favorit_not_selected)
+        }
+
         val documentid = FirebaseAuth.getInstance().currentUser?.uid.toString()
         binding.colourAddToCollectionBtn.setOnClickListener {
-            if (!colourData[position].isFavorite) {
+            if (colourData[position].isFavorite) {
                 binding.colourAddToCollectionBtn.setImageResource(R.drawable.favorit_selected)
                 viewModel.updateFavourite(colourData[position].id, true)
                 viewModel.saveColour(
