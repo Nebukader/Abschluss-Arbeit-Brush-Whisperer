@@ -12,15 +12,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.example.brush_wisperer.Data.Model.Profile
+import com.example.brush_wisperer.Data.Model.User
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.example.brush_wisperer.MainViewModel
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
 
 
@@ -50,10 +47,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 val user = auth.currentUser
                 user?.let {
                 val userId = user.uid
-                val user = hashMapOf(
-                    "uid" to userId,
-                    "username" to username,
-                    "email" to email
+                val user = User(
+                    uid = userId.toString(),
+                    username,
+                    email
                 )
                 userDb.newUser(user)
 

@@ -2,8 +2,7 @@
     <string name="app_name">Brush-Whisperer</string>
 
     <!-- Login Screen -->
-    <string name="default_web_client_id">YOUR_CLIENT_ID.apps.googleusercontent.com</string>
-    <string name="login">Login</string>
+    <string name="default_web_client_id">475852833638-cfsjt9g6a7nmrp4ce2kakri01sdhs8kk.apps.googleusercontent.com</string>    <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="skip">Skip</string>

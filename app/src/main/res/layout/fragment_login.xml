@@ -23,15 +23,17 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
             android:layout_alignBottom="@id/logoImageView"
             android:layout_centerInParent="true"
+            android:layout_marginBottom="-10dp"
             android:shadowDx="3"
             android:shadowDy="3"
             android:shadowRadius="10"
             android:text="Whisperer"
+            android:textColor="#FFFFFF"
             android:textSize="36sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:fontFamily="@font/doodle_shadow" />
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView
@@ -48,14 +50,15 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="28dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/doodle_shadow"
                 android:text="Welcome"
+                android:textColor="@color/md_theme_primary"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/design_default_color_primary"
-                />
+                android:textStyle="bold" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -108,7 +111,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_centerVertical="true"
                     android:textStyle="bold"
-                    android:textColor="@color/design_default_color_primary"
+                    android:textColor="@color/md_theme_primary"
                     android:alpha="0.7"/>
 
                 <com.google.android.material.textview.MaterialTextView

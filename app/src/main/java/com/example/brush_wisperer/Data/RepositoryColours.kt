@@ -14,11 +14,22 @@ class RepositoryColours(private val database: ColourDatabase,private val colourA
     }
 
     suspend fun insertAllColours(colourList: List<ColourEntity>) {
-        database.dao.insertAllColours(colourList)
+        for (colour in colourList) {
+            val exitstingColour = database.dao.getColourById(colour.id)
+            if (exitstingColour == null) {
+                database.dao.insertColour(colour)
+            }
+            Log.d("Repository", "insertAllColours: $colour")
+        }
     }
+
 
     suspend fun insertColour(colour: ColourEntity) {
         database.dao.insertColour(colour)
+    }
+
+    suspend fun updateFavourite(id: Int, isFavorite: Boolean) {
+        database.dao.updateFavourite(id, isFavorite)
     }
 
     suspend fun deleteAllColours() {

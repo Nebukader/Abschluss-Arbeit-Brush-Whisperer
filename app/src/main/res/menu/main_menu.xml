@@ -10,6 +10,7 @@
             android:icon="@drawable/paint_bottle"
             android:title="Colours" />
         <item
+            android:id="@+id/workshop_categorie"
             android:icon="@drawable/brush_icon"
             android:title="My Workshop" />
         <item
@@ -28,7 +29,7 @@
                     android:icon="@drawable/profile_icon"
                     android:title="Profile" />
                 <item
-                    android:id="@+id/logoutFragment"
+                    android:id="@+id/nav_logout"
                     android:icon="@drawable/logout_icon"
                     android:title="Logout" />
             </menu>

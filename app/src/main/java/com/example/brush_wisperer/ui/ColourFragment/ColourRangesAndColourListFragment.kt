@@ -12,6 +12,7 @@ import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentColourRangesAndColourListBinding
 import com.example.brush_wisperer.ui.Adapter.ColourListAdapter
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SearchView.*
 import com.example.brush_wisperer.Data.Local.Model.ColourEntity
 import com.example.brush_wisperer.Data.Model.ColourList
 import java.util.Locale
@@ -37,7 +38,7 @@ class ColourRangesAndColourListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ColourListAdapter(emptyList())
+        val adapter = ColourListAdapter(emptyList(), viewModel)
         val recyclerView = binding.colourRangesAndColourListRV
 
         recyclerView.adapter = adapter
@@ -68,7 +69,7 @@ class ColourRangesAndColourListFragment : Fragment() {
 
             val searchView = binding.searchBar
 
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            searchView.setOnQueryTextListener(object : OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return false
                 }

@@ -4,16 +4,42 @@
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/md_theme_onBackground</item>
-        <item name="android:fontFamily">@font/roboto_black</item>
+        <item name="android:fontFamily">@font/doodle_shadow</item>
     </style>
     <style name="SubHeadline">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/md_theme_onBackground</item>
-        <item name="android:fontFamily">@font/roboto_black</item>
+        <item name="android:fontFamily">@font/rowdies_regular</item>
+    </style>
+
+    <style name="NewsHeadline">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/md_theme_onBackground</item>
+        <item name="android:fontFamily">@font/rowdies_regular</item>
+    </style>
+    <style name="NewsContent">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/md_theme_onBackground</item>
+        <item name="android:fontFamily">@font/rowdies_regular</item>
     </style>
     <style name="RoundedCornersImage">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item>
     </style>
+
+    //Menu
+    <style name="HeaderTittle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/md_theme_onBackground</item>
+        <item name="android:fontFamily">@font/rowdies_bold</item>
+    </style>
+    <style name="HeaderSubTittle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/md_theme_onBackground</item>
+        <item name="android:fontFamily">@font/rowdies_light</item>
+    </style>
+
 </resources>

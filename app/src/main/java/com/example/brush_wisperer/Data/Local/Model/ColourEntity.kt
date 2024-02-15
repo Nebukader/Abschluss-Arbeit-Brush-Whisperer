@@ -20,5 +20,7 @@ data class ColourEntity(
     val hexcode: String,
     @ColumnInfo(name = "picture")
     val picture: String,
+    @ColumnInfo(name = "isFavorite")
+    var isFavorite: Boolean = false
 
 )

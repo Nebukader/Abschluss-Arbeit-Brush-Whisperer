@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="220dp"
     android:background="@color/md_theme_background"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -17,15 +17,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Minature Painting"
-        android:fontFamily="@font/roboto_black"
-        android:textSize="24sp"
+        android:textAppearance="@style/HeaderTittle"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="normal"
-        android:fontFamily="@font/roboto_thin"
-        android:textSize="14sp"
+        android:textAppearance="@style/HeaderSubTittle"
         android:text="Evrything you need for youre Minis"/>
 
 </LinearLayout>

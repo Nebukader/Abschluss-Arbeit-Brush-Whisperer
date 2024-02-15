@@ -18,7 +18,13 @@ interface ColourDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertColour(colourEntity: ColourEntity)
 
+    @Query("SELECT * FROM colour_table WHERE id = :id")
+    suspend fun getColourById(id: Int): ColourEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllColours(colourList: List<ColourEntity>)
+
+    @Query("UPDATE colour_table SET isFavorite = :isFavorite WHERE id = :id")
+    suspend fun updateFavourite(id: Int, isFavorite: Boolean)
 
 }

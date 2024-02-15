@@ -27,21 +27,17 @@
             <TextView
                 android:id="@+id/newsTitleTV"
                 android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_height="120dp"
                 android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
                 android:text="News"
-                android:textAppearance="@style/SubHeadline" />
+                android:textAppearance="@style/NewsContent" />
 
             <ImageView
                 android:id="@+id/newsImageIV"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/testnews"
-                app:strokeWidth="4dp" />
+                android:src="@drawable/testnews"/>
 
 
         </LinearLayout>

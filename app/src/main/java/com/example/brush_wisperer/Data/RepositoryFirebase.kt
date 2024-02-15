@@ -3,6 +3,7 @@ package com.example.brush_wisperer.Data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.brush_wisperer.Data.Model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -29,10 +30,9 @@ class RepositoryFirebase {
         _user.postValue(null)
     }
 
-    fun newUser(user: HashMap<String, String>) {
+    fun newUser(user: User) {
         db.collection("users")
-            .document(user["uid"] ?: "")
-            // mach dir eine klasse für user
+            .document(user.uid ?: "")
             .set(user)
             .addOnSuccessListener { documentReference ->
             }

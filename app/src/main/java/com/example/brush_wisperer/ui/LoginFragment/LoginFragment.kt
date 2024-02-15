@@ -61,7 +61,7 @@ class LoginFragment : Fragment() {
                 user ->
             if (user != null){
                 findNavController().navigate(R.id.homeFragment)
-                val toolbar = (activity as MainActivity).showToolBarIcon(View.VISIBLE)
+                val toolbar = (activity as MainActivity).showToolBar(View.VISIBLE)
             }
         })
 
@@ -116,7 +116,6 @@ class LoginFragment : Fragment() {
                         Toast.makeText(requireContext(),"${getString(R.string.login_failed)}", Toast.LENGTH_SHORT).show()
                     }
                 }
-
         }
     }
 

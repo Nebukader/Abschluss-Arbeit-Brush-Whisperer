@@ -28,10 +28,12 @@ class HomeViewModel (application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun fetchNews(){
+    fun updateNews(){
         viewModelScope.launch(Dispatchers.IO) {
             val exitstingNews = repository.allNews.value ?: emptyList()
+            Log.d("news", "Existing News: $exitstingNews")
             val fetchedNews = repository.scrapeBlogPost("/blogs/explore/tagged/news")
+            Log.d("news", "Fetched News: $fetchedNews")
 
             for (fetchedNew in fetchedNews){
                 var isNew = true
