@@ -69,11 +69,12 @@
             android:orientation="vertical"
             android:layout_gravity="center">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/projects_categorie_image" />
+            <ImageView
+                android:id="@+id/projectsCV"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/projects_categorie_image" />
 
             <TextView
                 android:layout_width="wrap_content"
