@@ -7,9 +7,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.brush_wisperer.Data.Local.Model.Database.ColourDao
 import com.example.brush_wisperer.Data.Local.Model.Database.ColourDatabaseInstance.getDatabase
-import com.example.brush_wisperer.Data.Model.firestoreColour
+import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.Data.Remote.ColourApi
 import com.example.brush_wisperer.Data.RepositoryColours
 import com.google.firebase.Firebase
@@ -54,7 +53,7 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
     fun saveColour(documentid:String,id:String, brandName: String, colourRange: String, colourPrimary: String, colourName: String, hexCode: String) {
         viewModelScope.launch {
             val db = Firebase.firestore
-            val colour = firestoreColour(
+            val colour = FirestoreColour(
                 id= id,
                 brandName = brandName,
                 colourRange = colourRange,
