@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentWorkshopCategorieBinding
 
 class Workshop_categorie : Fragment() {
@@ -28,6 +27,10 @@ class Workshop_categorie : Fragment() {
         binding.colourCollectionCV.setOnClickListener {
             val action =
                 Workshop_categorieDirections.actionWorkshopCategorieToWorkshopMyColourCollection()
+            findNavController().navigate(action)
+        }
+        binding.projectsCV.setOnClickListener {
+            val action = Workshop_categorieDirections.actionWorkshopCategorieToWorkshopNewProject()
             findNavController().navigate(action)
         }
     }
