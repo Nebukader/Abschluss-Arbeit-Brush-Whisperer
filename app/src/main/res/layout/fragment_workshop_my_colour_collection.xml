@@ -8,7 +8,7 @@
     tools:context=".ui.MyWorkshopFragment.Workshop_my_colour_collection">
 
     <TextView
-        android:id="@+id/myColourCollectionTittle"
+        android:id="@+id/titleTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -30,7 +30,7 @@
         app:cardElevation="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myColourCollectionTittle">
+        app:layout_constraintTop_toBottomOf="@+id/titleTV">
 
         <Spinner
             android:id="@+id/brandSpinner"
@@ -62,7 +62,7 @@
     </androidx.cardview.widget.CardView>
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/dividerTop"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="16dp"
@@ -80,15 +80,15 @@
         android:layout_marginEnd="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintBottom_toTopOf="@+id/dividerBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/dividerTop"
         tools:listitem="@layout/workshop_my_collection_colour_item"
         />
 
     <View
-        android:id="@+id/view2"
+        android:id="@+id/dividerBottom"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginBottom="16dp"
