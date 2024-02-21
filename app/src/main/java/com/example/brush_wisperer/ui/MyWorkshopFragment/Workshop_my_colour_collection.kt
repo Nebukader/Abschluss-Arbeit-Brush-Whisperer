@@ -9,9 +9,9 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.brush_wisperer.Data.Model.firestoreColour
+import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.databinding.FragmentWorkshopMyColourCollectionBinding
-import com.example.brush_wisperer.ui.Adapter.Workshop_colour_collection_adapter
+import com.example.brush_wisperer.ui.Adapter.WorkshopColourCollectionAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
@@ -23,19 +23,18 @@ class Workshop_my_colour_collection : Fragment() {
 
     private val viewModel: WorkshopViewModel by activityViewModels()
     private lateinit var binding: FragmentWorkshopMyColourCollectionBinding
-    private lateinit var favouriteColoursArrayList: ArrayList<firestoreColour>
+    private lateinit var favouriteColoursArrayList: ArrayList<FirestoreColour>
     private lateinit var db: FirebaseFirestore
-    private lateinit var adapter: Workshop_colour_collection_adapter
+    private lateinit var adapter: WorkshopColourCollectionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentWorkshopMyColourCollectionBinding.inflate(inflater)
         favouriteColoursArrayList = ArrayList()
-        adapter = Workshop_colour_collection_adapter(favouriteColoursArrayList)
+        adapter = WorkshopColourCollectionAdapter(favouriteColoursArrayList)
 
         return binding.root
     }
@@ -47,8 +46,6 @@ class Workshop_my_colour_collection : Fragment() {
             findNavController().popBackStack()
             findNavController().navigate(Workshop_my_colour_collectionDirections.actionWorkshopMyColourCollectionToWorkshopColourList())
         }
-        val currentUser = FirebaseAuth.getInstance().currentUser?.uid
-
         // get the user's favourite colours
 
         fun getFavouriteColours() {
@@ -66,7 +63,7 @@ class Workshop_my_colour_collection : Fragment() {
                     for (dc : DocumentChange in value?.documentChanges!!) {
 
                         if (dc.type == DocumentChange.Type.ADDED) {
-                            favouriteColoursArrayList.add(dc.document.toObject(firestoreColour::class.java))
+                            favouriteColoursArrayList.add(dc.document.toObject(FirestoreColour::class.java))
                         }
                     }
                     adapter.notifyDataSetChanged()
@@ -80,6 +77,9 @@ class Workshop_my_colour_collection : Fragment() {
         val spinnerAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_dropdown_item, spinnerList) }
         binding.brandSpinner.adapter = spinnerAdapter
 
+        binding.addColourBtn.setOnClickListener {
+            findNavController().navigate(Workshop_my_colour_collectionDirections.actionWorkshopMyColourCollectionToWorkshopColourList())
+        }
     }
 
 }
