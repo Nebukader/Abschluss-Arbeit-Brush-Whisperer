@@ -3,14 +3,12 @@ package com.example.brush_wisperer
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -19,10 +17,10 @@ import androidx.navigation.ui.NavigationUI
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.brush_wisperer.Data.Local.Model.Database.DeleteDatabaseWorker
-import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.example.brush_wisperer.databinding.ActivityMainBinding
 import com.example.brush_wisperer.ui.LoginFragment.LoginViewModel
 import java.util.concurrent.TimeUnit
+
 
 class MainActivity : AppCompatActivity() {
 
