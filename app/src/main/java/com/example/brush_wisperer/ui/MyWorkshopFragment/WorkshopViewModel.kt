@@ -1,39 +1,57 @@
 package com.example.brush_wisperer.ui.MyWorkshopFragment
 
+import android.content.ContentValues
+import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.brush_wisperer.Data.Model.firestoreColour
-import com.example.brush_wisperer.ui.Adapter.Workshop_colour_collection_adapter
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.EventListener
+import androidx.lifecycle.viewModelScope
+import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
+import kotlinx.coroutines.launch
+
 
 class WorkshopViewModel : ViewModel() {
+    private val repository = RepositoryFirebase()
 
-    private lateinit var favouriteColoursArrayList: ArrayList<firestoreColour>
-    private lateinit var db: FirebaseFirestore
+    val imageUri : MutableLiveData<Uri> = MutableLiveData<Uri>()
 
-    private fun getFavouriteColours(adapter : Workshop_colour_collection_adapter) {
-        db = FirebaseFirestore.getInstance()
-        db.collection("users").addSnapshotListener(object : EventListener<QuerySnapshot>{
-            override fun onEvent(
-                value: QuerySnapshot?,
-                error: FirebaseFirestoreException?
-            ){
-                if (error != null) {
-                    Log.e("Firestore Error",  error.message.toString())
-                    return
-                }
-                for (dc : DocumentChange in value?.documentChanges!!) {
+    val miniatureImage : MutableLiveData<Uri> = MutableLiveData<Uri>()
 
-                    if (dc.type == DocumentChange.Type.ADDED) {
-                        favouriteColoursArrayList.add(dc.document.toObject(firestoreColour::class.java))
-                    }
-                }
-                adapter.notifyDataSetChanged()
-            }
-        })
+    fun firebaseCurrentUserID():String? {
+        return repository.getCurrentUserID()
     }
+    fun currentUserDB() : FirebaseFirestore {
+        return repository.getDBInstance()
+    }
+    fun deleteMiniature(userID : String ,projectName: String, miniName: String) {
+        viewModelScope.launch {
+            val db = currentUserDB()
+            db.collection("users").document(userID).collection("projects")
+                .document(projectName).collection("miniatures")
+                .document(miniName)
+                .delete()
+                .addOnSuccessListener { documentReference ->
+                    Log.d(ContentValues.TAG, "DocumentSnapshot sucessfully deleted")
+                }
+                .addOnFailureListener() { e ->
+                    Log.w(ContentValues.TAG, "Error deleting document", e)
+                }
+        }
+    }
+    fun deleteStorageData(userID: String, projectName: String, miniName: String, imageRef: String) {
+        viewModelScope.launch {
+            val storageRef = repository.getStorageRef()
+            val image = storageRef.getReferenceFromUrl(imageRef).toString()
+            val imageString = image.substringAfterLast("/")
+            Log.d("StorageRef", imageString)
+            val imageReference = storageRef.reference.child("$userID/projects/$projectName/$miniName/$imageString")
+            imageReference.delete().addOnSuccessListener {
+                Log.d(ContentValues.TAG, "Image deleted")
+            }.addOnFailureListener {
+                Log.d(ContentValues.TAG, "Error deleting image")
+            }
+        }
+    }
+
 }
