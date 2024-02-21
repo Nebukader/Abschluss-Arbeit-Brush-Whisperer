@@ -2,7 +2,7 @@ package com.example.brush_wisperer.Data.Model
 
 
 
-data class firestoreColour(
+data class FirestoreColour(
     val id: String = "",
     val brandName: String = "",
     val colourRange: String = "",
