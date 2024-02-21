@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_workshop_categorie_to_workshop_my_colour_collection"
             app:destination="@id/workshop_my_colour_collection" />
+        <action
+            android:id="@+id/action_workshop_categorie_to_workshop_new_project"
+            app:destination="@id/workshop_new_project" />
     </fragment>
     <fragment
         android:id="@+id/workshop_my_colour_collection"
@@ -92,4 +95,20 @@
         android:id="@+id/workshop_colour_list"
         android:name="com.example.brush_wisperer.ui.MyWorkshopFragment.Workshop_colour_list"
         android:label="Workshop_colour_list" />
+    <fragment
+        android:id="@+id/workshop_new_project"
+        android:name="com.example.brush_wisperer.ui.MyWorkshopFragment.Workshop_project"
+        android:label="Workshop_new_project" >
+        <action
+            android:id="@+id/action_workshop_new_project_to_workshop_project_miniatures"
+            app:destination="@id/workshop_project_miniatures" />
+    </fragment>
+    <fragment
+        android:id="@+id/workshop_project_miniatures"
+        android:name="com.example.brush_wisperer.ui.MyWorkshopFragment.Workshop_project_miniatures"
+        android:label="Workshop_project_miniatures" >
+        <argument
+            android:name="projectName"
+            app:argType="string" />
+    </fragment>
 </navigation>
