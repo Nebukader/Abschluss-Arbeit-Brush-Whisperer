@@ -5,14 +5,14 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.brush_wisperer.Data.Model.firestoreColour
+import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.databinding.WorkshopMyCollectionColourItemBinding
 
-class Workshop_colour_collection_adapter(
+class WorkshopColourCollectionAdapter(
 
-    private val favoritColourList : ArrayList<firestoreColour>
+    private val favoritColourList : ArrayList<FirestoreColour>
 
-) : RecyclerView.Adapter<Workshop_colour_collection_adapter.ItemViewHolder>() {
+) : RecyclerView.Adapter<WorkshopColourCollectionAdapter.ItemViewHolder>() {
 
 
     class ItemViewHolder(val binding: WorkshopMyCollectionColourItemBinding) :
