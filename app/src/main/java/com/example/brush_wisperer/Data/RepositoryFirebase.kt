@@ -4,15 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.brush_wisperer.Data.Model.User
+import com.example.brush_wisperer.utils.FirebaseUtil
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class RepositoryFirebase {
 
-    private val db = Firebase.firestore
+    private val db = FirebaseUtil.getDBInstance()
     private val auth = Firebase.auth
 
     val _user = MutableLiveData<FirebaseUser?>(auth.currentUser)
@@ -75,5 +77,14 @@ class RepositoryFirebase {
                 }
             }
         auth.addAuthStateListener(authStateListener)
+    }
+    fun getCurrentUserID(): String? {
+        return FirebaseUtil.getCurrentUserID()
+    }
+    fun getDBInstance(): FirebaseFirestore {
+        return FirebaseUtil.getDBInstance()
+    }
+    fun getStorageRef(): FirebaseStorage {
+        return FirebaseStorage.getInstance()
     }
 }
