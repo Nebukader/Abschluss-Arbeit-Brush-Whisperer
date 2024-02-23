@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.MyWorkshopFragment.Workshop_my_colour_collection">
 
@@ -13,12 +13,12 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
         app:layout_constraintBottom_toTopOf="@+id/dividerBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dividerTop"
-        tools:listitem="@layout/workshop_miniature_item"/>
+        app:spanCount="2"
+        tools:listitem="@layout/workshop_miniature_item" />
 
     <TextView
         android:id="@+id/titleTV"
@@ -33,14 +33,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/descritionTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/textview_border"
+        android:padding="10dp"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Hier ist ein Codeblock"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/dividerTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTV"
+        app:layout_constraintVertical_bias="0.0" />
+
     <View
         android:id="@+id/dividerTop"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="@color/md_theme_outlineVariant"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTV" />
+        app:layout_constraintTop_toBottomOf="@id/descritionTV" />
 
     <View
         android:id="@+id/dividerBottom"

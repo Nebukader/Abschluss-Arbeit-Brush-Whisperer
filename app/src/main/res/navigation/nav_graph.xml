@@ -110,5 +110,8 @@
         <argument
             android:name="projectName"
             app:argType="string" />
+        <argument
+            android:name="projectDesc"
+            app:argType="string" />
     </fragment>
 </navigation>

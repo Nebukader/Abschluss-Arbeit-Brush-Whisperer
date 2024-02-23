@@ -100,7 +100,7 @@ class Workshop_project : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         projectsArrayList = ArrayList<Projects>()
-        adapter = ProjectsAdapter(projectsArrayList)
+        adapter = ProjectsAdapter(projectsArrayList, viewModel)
         getProjects()
 
         //region: Add new project button
@@ -110,7 +110,6 @@ class Workshop_project : Fragment() {
             val dialogBinding =
                 WorkshopNewProjectDialogBinding.inflate(LayoutInflater.from(view.context))
             val positiveButton = dialogBinding.createBtn
-            val description = dialogBinding.projectDescriptionET.editText?.text.toString()
             val totalMiniatures = dialogBinding.numberPicker.apply {
                 minValue = 1
                 maxValue = 120
@@ -152,6 +151,7 @@ class Workshop_project : Fragment() {
 
             positiveButton.setOnClickListener {
                 val projectName = dialogBinding.projectNameET.editText?.text.toString()
+                val description = dialogBinding.projectDescriptionET.editText?.text.toString()
                 val currentUser = FirebaseAuth.getInstance().currentUser?.uid
                 val db = FirebaseFirestore.getInstance()
                 val storage = FirebaseStorage.getInstance()
@@ -171,8 +171,8 @@ class Workshop_project : Fragment() {
                             totalMiniatures,
                             uri.toString()
                         )
-                        db.collection("users").document(currentUser!!).collection("projects")
-                            .add(project)
+                        db.collection("users").document(currentUser!!).collection("projects").document(projectName)
+                            .set(project)
                             .addOnSuccessListener { documentReference ->
                                 Toast.makeText(
                                     view.context,

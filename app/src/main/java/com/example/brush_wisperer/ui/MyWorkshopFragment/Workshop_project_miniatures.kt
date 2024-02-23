@@ -86,7 +86,7 @@ class Workshop_project_miniatures : Fragment() {
             }
         }
     }
-
+    on
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -104,6 +104,7 @@ class Workshop_project_miniatures : Fragment() {
         binding.myMiniaturesRV.adapter = adapter
 
         binding.titleTV.text = safeArgs.projectName
+        binding.descritionTV.text = safeArgs.projectDesc
 
         val dialogBuilder = AlertDialog.Builder(requireContext())
         val dialogBinding = WorkshopDialogAddMiniatureBinding.inflate(layoutInflater)

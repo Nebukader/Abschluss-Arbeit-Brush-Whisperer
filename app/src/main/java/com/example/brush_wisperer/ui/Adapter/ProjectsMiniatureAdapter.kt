@@ -31,6 +31,7 @@ class ProjectsMiniatureAdapter(
         return ItemViewHolder(binding)
     }
 
+
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val binding = holder.binding
@@ -65,23 +66,24 @@ class ProjectsMiniatureAdapter(
         binding.progressBar.progress = projectsMiniature[position].currentAmmount
         binding.progressBar.max = projectsMiniature[position].miniAmmount
 
+        //region Delete Miniature
+        //Löschen einer Miniatur aus dem Projekt
         binding.miniatureCV.setOnLongClickListener { view ->
             binding.miniatureCV.setCardBackgroundColor(ContextCompat.getColor
                 (view.context, android.R.color.system_error_light
             ))
             
             val builder = AlertDialog.Builder(view.context)
-            builder.setMessage("Sind Sie sicher, dass Sie dieses Element löschen möchten?")
+            builder.setMessage("Are you sure you want to Delete the Miniature ?")
                 .setCancelable(false)
-                .setPositiveButton("Ja") { dialog, id ->
+                .setPositiveButton("Yes") { dialog, id ->
                     viewModel.deleteMiniature(userID, projectName, projectsMiniature[position].miniName)
-                    val imageRef = projectsMiniature[position].miniImage
-                    viewModel.deleteStorageData(userID, projectName, projectsMiniature[position].miniName, imageRef)
+                    viewModel.deleteMiniatureStorage(userID, projectName, projectsMiniature[position].miniName, projectsMiniature[position].miniImage)
                     projectsMiniature.removeAt(position)
                     notifyItemRemoved(position)
                     notifyItemRangeChanged(position, projectsMiniature.size)
                 }
-                .setNegativeButton("Nein") { dialog, id ->
+                .setNegativeButton("No") { dialog, id ->
                     dialog.dismiss()
                 }
             val alert = builder.create()
@@ -93,6 +95,7 @@ class ProjectsMiniatureAdapter(
 
             true
         }
+        //endregion
 
     }
     override fun getItemCount() = projectsMiniature.size
