@@ -1,7 +1,8 @@
-package com.example.brush_wisperer.ui.MyWorkshopFragment
+package com.example.brush_wisperer.ui.WorkshopFragment
 
 import android.app.AlertDialog
 import android.content.ContentValues
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -18,14 +19,13 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.navArgs
 import coil.load
-import com.example.brush_wisperer.Data.Model.ProjectsMiniature
+import com.example.brush_wisperer.Data.Model.Projects
 import com.example.brush_wisperer.R
-import com.example.brush_wisperer.databinding.FragmentWorkshopProjectMiniaturesBinding
-import com.example.brush_wisperer.databinding.WorkshopDialogAddMiniatureBinding
+import com.example.brush_wisperer.databinding.FragmentWorkshopNewProjectBinding
 import com.example.brush_wisperer.databinding.WorkshopDialogChooseImageBinding
-import com.example.brush_wisperer.ui.Adapter.ProjectsMiniatureAdapter
+import com.example.brush_wisperer.databinding.WorkshopNewProjectDialogBinding
+import com.example.brush_wisperer.ui.Adapter.ProjectsAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
@@ -37,19 +37,19 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class Workshop_project_miniatures : Fragment() {
+class Workshop_project : Fragment() {
 
-    private lateinit var binding: FragmentWorkshopProjectMiniaturesBinding
+    private lateinit var binding: FragmentWorkshopNewProjectBinding
     private var selectedImage: Uri? = null
     private var photoUri: Uri? = null
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
     private lateinit var singlePhotoLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private var imageTaken = false
     private val viewModel: WorkshopViewModel by activityViewModels()
-    private lateinit var miniatureArrayList: ArrayList<ProjectsMiniature>
-    private lateinit var adapter: ProjectsMiniatureAdapter
-    private val safeArgs: Workshop_project_miniaturesArgs by navArgs()
-    private lateinit var db: FirebaseFirestore
+    private lateinit var projectsArrayList: ArrayList<Projects>
+    private lateinit var adapter: ProjectsAdapter
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +69,7 @@ class Workshop_project_miniatures : Fragment() {
             if (success) {
                 selectedImage = photoUri
                 imageTaken = true
-                viewModel.miniatureImage.value = selectedImage
+                viewModel.imageUri.value = selectedImage
             } else {
                 Toast.makeText(context, "Failed to take picture", Toast.LENGTH_SHORT).show()
             }
@@ -80,54 +80,59 @@ class Workshop_project_miniatures : Fragment() {
             if (uri != null) {
                 selectedImage = uri
                 imageTaken = true
-                viewModel.miniatureImage.value = selectedImage
+                viewModel.imageUri.value = selectedImage
             } else {
                 Toast.makeText(context, "Failed to pick image", Toast.LENGTH_SHORT).show()
             }
         }
     }
-    on
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        miniatureArrayList = ArrayList()
-        adapter = ProjectsMiniatureAdapter(miniatureArrayList, safeArgs.projectName, viewModel)
-        binding = FragmentWorkshopProjectMiniaturesBinding.inflate(inflater)
+        binding = FragmentWorkshopNewProjectBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getMiniatures()
-        binding.myMiniaturesRV.adapter = adapter
 
-        binding.titleTV.text = safeArgs.projectName
-        binding.descritionTV.text = safeArgs.projectDesc
+        projectsArrayList = ArrayList<Projects>()
+        adapter = ProjectsAdapter(projectsArrayList, viewModel)
+        getProjects()
 
-        val dialogBuilder = AlertDialog.Builder(requireContext())
-        val dialogBinding = WorkshopDialogAddMiniatureBinding.inflate(layoutInflater)
-        val positiveButton = dialogBinding.addMiniatureBTN
-        val miniImage = dialogBinding.miniImageIV
-        val miniUnits =
-            dialogBinding.numberPicker.apply { minValue = 1; maxValue = 120 }.value
+        //region: Add new project button
+
         binding.addNewProjectBtn.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(view.context)
+            val dialogBinding =
+                WorkshopNewProjectDialogBinding.inflate(LayoutInflater.from(view.context))
+            val positiveButton = dialogBinding.createBtn
+            val totalMiniatures = dialogBinding.numberPicker.apply {
+                minValue = 1
+                maxValue = 120
+            }.value
+            val photo = dialogBinding.addPhotoIv
 
-            viewModel.miniatureImage.observe(viewLifecycleOwner) { uri ->
+            viewModel.imageUri.observe(viewLifecycleOwner) { uri ->
                 if (uri != null) {
-                    miniImage.load(uri)
-                } else {
-                    miniImage.load(R.drawable.orc_workshop_gallery_bg)
+                    photo.load(uri)
+                }
+                else {
+                    photo.load(R.drawable.orc_workshop_gallery_bg)
                 }
             }
-            miniImage.setOnClickListener {
+
+            photo.setOnClickListener {
                 val imageDialog = dialogBuilder.create()
-                imageDialog.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+                imageDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 val dialogBinding =
                     WorkshopDialogChooseImageBinding.inflate(LayoutInflater.from(view.context))
                 val takePhoto = dialogBinding.cameraBtn
                 val choosePhoto = dialogBinding.galleryBtn
+
                 takePhoto.setOnClickListener {
                     takePictureLauncher.launch(photoUri)
                     imageDialog.dismiss()
@@ -139,12 +144,14 @@ class Workshop_project_miniatures : Fragment() {
                 imageDialog.setView(dialogBinding.root)
                 imageDialog.show()
             }
+
             dialogBuilder.setView(dialogBinding.root)
             val dialog = dialogBuilder.create()
-            dialog.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
             positiveButton.setOnClickListener {
-                val miniName = dialogBinding.miniaturetNameET.editText?.text.toString()
+                val projectName = dialogBinding.projectNameET.editText?.text.toString()
+                val description = dialogBinding.projectDescriptionET.editText?.text.toString()
                 val currentUser = FirebaseAuth.getInstance().currentUser?.uid
                 val db = FirebaseFirestore.getInstance()
                 val storage = FirebaseStorage.getInstance()
@@ -152,21 +159,20 @@ class Workshop_project_miniatures : Fragment() {
                 val timestamp =
                     SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
                 val imageFileName = "JPEG_${timestamp}_"
-                val totalMinis = dialogBinding.numberPicker.value
                 val projectRef =
-                    storageRef.child("${currentUser}/projects/${safeArgs.projectName}/${miniName}/${imageFileName}")
+                    storageRef.child("${currentUser}/projects/${projectName}/${imageFileName}")
                 val uploadTask = projectRef.putFile(selectedImage!!)
                 uploadTask.addOnSuccessListener {
-                    projectRef.downloadUrl.addOnSuccessListener { miniImage ->
+                    projectRef.downloadUrl.addOnSuccessListener { uri ->
 
-                        val project = ProjectsMiniature(
-                            miniName,
-                            miniImage.toString(),
-                            1,
-                            totalMinis,
+                        val project = Projects(
+                            projectName,
+                            description,
+                            totalMiniatures,
+                            uri.toString()
                         )
-                        db.collection("users").document(currentUser!!).collection("projects")
-                            .document(safeArgs.projectName).collection("miniatures").document(miniName).set(project)
+                        db.collection("users").document(currentUser!!).collection("projects").document(projectName)
+                            .set(project)
                             .addOnSuccessListener { documentReference ->
                                 Toast.makeText(
                                     view.context,
@@ -187,20 +193,18 @@ class Workshop_project_miniatures : Fragment() {
                     }
                 }
             }
-            if (dialog.isShowing) {
-                dialog.dismiss()
-            }
             dialog.show() // Dialog sofort anzeigen
-            viewModel.miniatureImage.value = null
+            viewModel.imageUri.value = null
         }
+        //endregion
     }
 
-    fun getMiniatures() {
+    private fun getProjects() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        db = FirebaseFirestore.getInstance()
+        val db = FirebaseFirestore.getInstance()
         db.collection("users").document(currentUserId).collection("projects")
-            .document(safeArgs.projectName).collection("miniatures")
-            .addSnapshotListener(object : EventListener<QuerySnapshot> {
+            .addSnapshotListener(object :
+                EventListener<QuerySnapshot> {
                 override fun onEvent(
                     value: QuerySnapshot?,
                     error: FirebaseFirestoreException?
@@ -212,19 +216,14 @@ class Workshop_project_miniatures : Fragment() {
                     for (dc: DocumentChange in value?.documentChanges!!) {
 
                         if (dc.type == DocumentChange.Type.ADDED) {
-                            miniatureArrayList.add(dc.document.toObject(ProjectsMiniature::class.java))
+                            projectsArrayList.add(dc.document.toObject(Projects::class.java))
                         }
                     }
                     adapter.notifyDataSetChanged()
+                    if (projectsArrayList.isNotEmpty()) {
+                        binding.myProjectCollectionRV.adapter = adapter
+                    }
                 }
             })
     }
-
 }
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-package com.example.brush_wisperer.ui.MyWorkshopFragment
+package com.example.brush_wisperer.ui.WorkshopFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

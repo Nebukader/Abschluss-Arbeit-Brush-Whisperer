@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.MyWorkshopFragment.Workshop_my_colour_collection">
+    tools:context=".ui.WorkshopFragment.Workshop_my_colour_collection">
 
     <TextView
         android:id="@+id/titleTV"

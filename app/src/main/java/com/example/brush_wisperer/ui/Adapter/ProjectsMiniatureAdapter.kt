@@ -12,7 +12,7 @@ import coil.load
 import com.example.brush_wisperer.Data.Model.ProjectsMiniature
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.WorkshopMiniatureItemBinding
-import com.example.brush_wisperer.ui.MyWorkshopFragment.WorkshopViewModel
+import com.example.brush_wisperer.ui.WorkshopFragment.WorkshopViewModel
 
 
 class ProjectsMiniatureAdapter(
@@ -96,7 +96,9 @@ class ProjectsMiniatureAdapter(
             true
         }
         //endregion
-
+        binding.miniatureCV.setOnClickListener{
+            viewModel.selectMiniature(projectsMiniature[position])
+        }
     }
     override fun getItemCount() = projectsMiniature.size
 }

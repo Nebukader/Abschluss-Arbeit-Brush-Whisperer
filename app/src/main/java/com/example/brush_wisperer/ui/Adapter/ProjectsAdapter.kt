@@ -14,8 +14,8 @@ import coil.load
 import com.example.brush_wisperer.Data.Model.Projects
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.WorkshopProjectItemBinding
-import com.example.brush_wisperer.ui.MyWorkshopFragment.WorkshopViewModel
-import com.example.brush_wisperer.ui.MyWorkshopFragment.Workshop_projectDirections
+import com.example.brush_wisperer.ui.WorkshopFragment.WorkshopViewModel
+import com.example.brush_wisperer.ui.WorkshopFragment.Workshop_projectDirections
 
 class ProjectsAdapter(
     private val projects: ArrayList<Projects>,
