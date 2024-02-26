@@ -21,6 +21,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.Data.Model.ProjectsMiniature
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentWorkshopProjectMiniaturesBinding
@@ -28,6 +29,8 @@ import com.example.brush_wisperer.databinding.WorkshopDialogAddMiniatureBinding
 import com.example.brush_wisperer.databinding.WorkshopDialogChooseImageBinding
 import com.example.brush_wisperer.databinding.WorkshopMiniaturePopupBinding
 import com.example.brush_wisperer.ui.Adapter.ProjectsMiniatureAdapter
+import com.example.brush_wisperer.ui.Adapter.WorkshopColourCollectionAdapter
+import com.example.brush_wisperer.ui.Adapter.WorkshopMiniatureColoursAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
@@ -39,7 +42,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class Workshop_project_miniatures : Fragment() {
+class WorkshopProjectMiniatures : Fragment() {
 
     private lateinit var binding: FragmentWorkshopProjectMiniaturesBinding
     private var selectedImage: Uri? = null
@@ -49,8 +52,9 @@ class Workshop_project_miniatures : Fragment() {
     private var imageTaken = false
     private val viewModel: WorkshopViewModel by activityViewModels()
     private lateinit var miniatureArrayList: ArrayList<ProjectsMiniature>
+    private lateinit var miniColourAdapter: WorkshopMiniatureColoursAdapter
     private lateinit var adapter: ProjectsMiniatureAdapter
-    private val safeArgs: Workshop_project_miniaturesArgs by navArgs()
+    private val safeArgs: WorkshopProjectMiniaturesArgs by navArgs()
     private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +92,7 @@ class Workshop_project_miniatures : Fragment() {
             }
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -104,19 +109,30 @@ class Workshop_project_miniatures : Fragment() {
         getMiniatures()
         binding.myMiniaturesRV.adapter = adapter
 
+        //im viewmodel
+        viewModel.projectName.value = safeArgs.projectName
+
         binding.titleTV.text = safeArgs.projectName
         binding.descritionTV.text = safeArgs.projectDesc
-
         viewModel.selectedMiniature.observe(viewLifecycleOwner) {
-            Log.d("Miniature", it.miniName.toString())
             if (it != null) {
                 val dialogBuilder = AlertDialog.Builder(requireContext())
                 val dialogBinding = WorkshopMiniaturePopupBinding.inflate(layoutInflater)
+                val recyclerView = dialogBinding.recyclerView
+                val miniName = it.miniName
+                val miniColours = viewModel.miniColourArrayList
+                val adapter = WorkshopMiniatureColoursAdapter(miniColours)
+                viewModel.getMiniColours(safeArgs.projectName,miniName,adapter)
+                adapter.notifyDataSetChanged()
+                recyclerView.adapter = adapter
+
                 dialogBinding.minatureTitleTV.text = it.miniName
                 dialogBinding.miniatureImageIV.load(it.miniImage)
+
+
                 dialogBinding.addColoursBTN.setOnClickListener {
                     val action =
-                        Workshop_project_miniaturesDirections.actionWorkshopProjectMiniaturesToWorkshopPopupColourAdd()
+                        WorkshopProjectMiniaturesDirections.actionWorkshopProjectMiniaturesToWorkshopPopupColourAdd()
                     findNavController().navigate(action)
                 }
                 dialogBuilder.setView(dialogBinding.root)
@@ -185,7 +201,8 @@ class Workshop_project_miniatures : Fragment() {
                             totalMinis,
                         )
                         db.collection("users").document(currentUser!!).collection("projects")
-                            .document(safeArgs.projectName).collection("miniatures").document(miniName).set(project)
+                            .document(safeArgs.projectName).collection("miniatures")
+                            .document(miniName).set(project)
                             .addOnSuccessListener { documentReference ->
                                 Toast.makeText(
                                     view.context,
@@ -228,8 +245,8 @@ class Workshop_project_miniatures : Fragment() {
                         Log.e("Firestore Error", error.message.toString())
                         return
                     }
+                    miniatureArrayList.clear()
                     for (dc: DocumentChange in value?.documentChanges!!) {
-
                         if (dc.type == DocumentChange.Type.ADDED) {
                             miniatureArrayList.add(dc.document.toObject(ProjectsMiniature::class.java))
                         }
@@ -238,7 +255,6 @@ class Workshop_project_miniatures : Fragment() {
                 }
             })
     }
-
 }
 
 
