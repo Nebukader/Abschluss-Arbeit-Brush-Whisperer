@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "475852833638-92sc3dav2mg89kait06l8esnjcgcf5lh.apps.googleusercontent.com",
+          "client_id": "475852833638-3agitujq5tp5kptgsbgjqm8ctku3ngff.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.brush_wisperer",
-            "certificate_hash": "7d8cac04fbfd8f3c793172ce32d29b0f886755f5"
+            "certificate_hash": "61968c0d6a9144d583291fd80f62f7f57599cef3"
           }
         },
         {

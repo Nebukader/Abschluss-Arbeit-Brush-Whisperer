@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/workshop_categorie"
-        android:name="com.example.brush_wisperer.ui.WorkshopFragment.Workshop_categorie"
+        android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopCategorie"
         android:label="fragment_workshop_categorie"
         tools:layout="@layout/fragment_workshop_categorie" >
         <action
@@ -87,7 +87,7 @@
     </fragment>
     <fragment
         android:id="@+id/workshop_my_colour_collection"
-        android:name="com.example.brush_wisperer.ui.WorkshopFragment.Workshop_my_colour_collection"
+        android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopMyColourCollection"
         android:label="fragment_workshop_my_colour_collection"
         tools:layout="@layout/fragment_workshop_my_colour_collection" >
         <action
@@ -96,12 +96,12 @@
     </fragment>
     <fragment
         android:id="@+id/workshop_colour_list"
-        android:name="com.example.brush_wisperer.ui.WorkshopFragment.Workshop_colour_list"
+        android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopColourList"
         android:label="Workshop_colour_list"
         tools:layout="@layout/fragment_workshop_colour_list"/>
     <fragment
         android:id="@+id/workshop_new_project"
-        android:name="com.example.brush_wisperer.ui.WorkshopFragment.Workshop_project"
+        android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopProject"
         android:label="Workshop_new_project"
         tools:layout="@layout/fragment_workshop_new_project">
         <action
@@ -110,7 +110,7 @@
     </fragment>
     <fragment
         android:id="@+id/workshop_project_miniatures"
-        android:name="com.example.brush_wisperer.ui.WorkshopFragment.Workshop_project_miniatures"
+        android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopProjectMiniatures"
         android:label="Workshop_project_miniatures"
         tools:layout="@layout/fragment_workshop_project_miniatures">
         <argument
@@ -125,7 +125,7 @@
     </fragment>
     <fragment
         android:id="@+id/workshop_popup_colour_add"
-        android:name="com.example.brush_wisperer.ui.WorkshopFragment.Workshop_popup_colour_add"
+        android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopPopupColourAdd"
         android:label="Workshop_popup_colour_add"
         tools:layout="@layout/fragment_workshop_popup_colour_add"/>
 </navigation>

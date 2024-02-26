@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.WorkshopFragment.Workshop_my_colour_collection">
+    tools:context=".ui.WorkshopFragment.WorkshopMyColourCollection">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myMiniaturesRV"
