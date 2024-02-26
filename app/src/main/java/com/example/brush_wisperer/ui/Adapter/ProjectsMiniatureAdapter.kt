@@ -98,6 +98,7 @@ class ProjectsMiniatureAdapter(
         //endregion
         binding.miniatureCV.setOnClickListener{
             viewModel.selectMiniature(projectsMiniature[position])
+
         }
     }
     override fun getItemCount() = projectsMiniature.size
