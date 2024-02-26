@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.databinding.FragmentWorkshopCategorieBinding
 
-class Workshop_categorie : Fragment() {
+class WorkshopCategorie : Fragment() {
 
     private var _binding: FragmentWorkshopCategorieBinding? = null
     private val binding get() = _binding!!
@@ -26,11 +26,11 @@ class Workshop_categorie : Fragment() {
 
         binding.colourCollectionCV.setOnClickListener {
             val action =
-                Workshop_categorieDirections.actionWorkshopCategorieToWorkshopMyColourCollection()
+                WorkshopCategorieDirections.actionWorkshopCategorieToWorkshopMyColourCollection()
             findNavController().navigate(action)
         }
         binding.projectsCV.setOnClickListener {
-            val action = Workshop_categorieDirections.actionWorkshopCategorieToWorkshopNewProject()
+            val action = WorkshopCategorieDirections.actionWorkshopCategorieToWorkshopNewProject()
             findNavController().navigate(action)
         }
     }
