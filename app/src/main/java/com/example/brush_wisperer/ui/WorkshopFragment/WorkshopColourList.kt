@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentWorkshopColourListBinding
 import com.example.brush_wisperer.ui.Adapter.ColourListAdapter
 import com.example.brush_wisperer.ui.ColourFragment.ColourViewModel
 
-class Workshop_colour_list : Fragment() {
+class WorkshopColourList : Fragment() {
 
-    private val viewModel: ColourViewModel by viewModels()
+    private val viewModel: ColourViewModel by activityViewModels()
     private lateinit var binding: FragmentWorkshopColourListBinding
     private var isDataLoaded = false
 
