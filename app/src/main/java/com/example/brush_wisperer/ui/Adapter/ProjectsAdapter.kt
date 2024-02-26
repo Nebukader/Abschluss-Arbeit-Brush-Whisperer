@@ -14,8 +14,9 @@ import coil.load
 import com.example.brush_wisperer.Data.Model.Projects
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.WorkshopProjectItemBinding
+import com.example.brush_wisperer.ui.WorkshopFragment.WorkshopProjectDirections
 import com.example.brush_wisperer.ui.WorkshopFragment.WorkshopViewModel
-import com.example.brush_wisperer.ui.WorkshopFragment.Workshop_projectDirections
+
 
 class ProjectsAdapter(
     private val projects: ArrayList<Projects>,
@@ -42,7 +43,8 @@ class ProjectsAdapter(
         binding.titleTV.text = projects[position].title
         binding.projectImageIV.load(projects[position].image)
         binding.projectCV.setOnClickListener {
-            it.findNavController().navigate(Workshop_projectDirections.actionWorkshopNewProjectToWorkshopProjectMiniatures(projectName, projectDesc))
+            it.findNavController().navigate(WorkshopProjectDirections.actionWorkshopNewProjectToWorkshopProjectMiniatures(projectName, projectDesc))
+            viewModel.selectProjectName(projectName)
             Log.d("Desc", projectDesc)
         }
         binding.projectCV.setOnLongClickListener(View.OnLongClickListener {view ->
