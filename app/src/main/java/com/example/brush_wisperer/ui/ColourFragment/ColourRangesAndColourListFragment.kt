@@ -20,7 +20,6 @@ import java.util.Locale
 
 class ColourRangesAndColourListFragment : Fragment() {
 
-    private val colourItemList = ArrayList<ColourList>()
     private var isDataLoaded = false
 
     private val viewModel: ColourViewModel by viewModels()
