@@ -1,61 +1,101 @@
 package com.example.brush_wisperer.ui.Adapter
 
-import android.app.AlertDialog
+import android.content.ContentValues.TAG
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.brush_wisperer.Data.Local.Model.ColourEntity
-import com.example.brush_wisperer.Data.Model.Projects
 import com.example.brush_wisperer.R
-import com.example.brush_wisperer.databinding.ColourItemBinding
 import com.example.brush_wisperer.databinding.WorkshopPopupColourlistAddItemBinding
-import com.example.brush_wisperer.databinding.WorkshopProjectItemBinding
-import com.example.brush_wisperer.ui.ColourFragment.ColourViewModel
 import com.example.brush_wisperer.ui.WorkshopFragment.WorkshopViewModel
-import com.example.brush_wisperer.ui.WorkshopFragment.Workshop_projectDirections
 import com.google.firebase.auth.FirebaseAuth
 
 class WorkshopColourListAdapter(
-    private val miniatureColour: ArrayList<ColourEntity>,
-    private val viewModel : WorkshopViewModel,
-) : RecyclerView.Adapter<WorkshopColourListAdapter.ItemViewHolder>() {
+    private val viewModel: WorkshopViewModel
+) : ListAdapter<ColourEntity, WorkshopColourListAdapter.ItemViewHolder>(WorkshopColourDiffCallback()) {
 
     class ItemViewHolder(val binding: WorkshopPopupColourlistAddItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val binding = WorkshopPopupColourlistAddItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = WorkshopPopupColourlistAddItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ItemViewHolder(binding)
     }
 
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-
-        val userID = viewModel.firebaseCurrentUserID()
-        val db = viewModel.currentUserDB()
-        // Richtigen Pfad setzten
-        val docRef = db.collection("users").document(userID!!).collection("projects").document(miniatureColour[position].colour_name)
+        val colourData = getItem(position)
         val binding = holder.binding
-        val colourName = miniatureColour[position].colour_name
-        val colourHex = miniatureColour[position].hexcode
-        binding.colourNameTV.text = miniatureColour[position].colour_name
-        binding.colourShapeIV
 
+        val color = Color.parseColor(colourData.hexcode)
+        val colorStateList = ColorStateList.valueOf(color)
+
+        binding.colourShapeIV.imageTintList = colorStateList
+        binding.colourNameTV.text = colourData.colour_name
+
+        if (colourData.isFavorite) {
+            binding.colourAddToMiniBTN.setImageResource(R.drawable.checkmark_icon)
+        } else {
+            binding.colourAddToMiniBTN.setImageResource(R.drawable.add_icon)
+        }
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val documentid = currentUser?.uid.toString()
+        Log.d("TAG", "Adapter: ${currentUser?.uid}")
+        val projectName = viewModel.projectName.value.toString()
+        val miniatureName = viewModel.selectedMiniature.value?.miniName.toString()
+        // Firestore-Daten abrufen
+        val db = viewModel.currentUserDB()
+        val docRef = db.collection("users").document(documentid).collection("projects")
+            .document(projectName).collection("miniatures")
+            .document(miniatureName).collection("colours").document(colourData.id.toString())
+
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                binding.colourAddToMiniBTN.setImageResource(R.drawable.checkmark_icon)
+            } else {
+                binding.colourAddToMiniBTN.setImageResource(R.drawable.add_icon)
+            }
+            binding.colourAddToMiniBTN.setOnClickListener{
+                if (snapshot != null && snapshot.exists()) {
+                    viewModel.deleteColour(documentid, projectName, miniatureName, colourData.id.toString())
+                } else {
+                    viewModel.saveMiniColours(
+                        documentid, projectName,
+                        miniatureName, colourData.id.toString(),
+                        colourData.brand_name, colourData.colour_range,
+                        colourData.colour_primary, colourData.colour_name,
+                        colourData.hexcode)
+                }
+            }
+        }
+
+
+        fun onApplySearch(colourList: List<ColourEntity>) {
+            submitList(colourList)
+        }
     }
 
+    class WorkshopColourDiffCallback : DiffUtil.ItemCallback<ColourEntity>() {
+        override fun areItemsTheSame(oldItem: ColourEntity, newItem: ColourEntity): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-
-    override fun getItemCount() = miniatureColour.size
+        override fun areContentsTheSame(oldItem: ColourEntity, newItem: ColourEntity): Boolean {
+            return oldItem == newItem
+        }
+    }
 }
-
