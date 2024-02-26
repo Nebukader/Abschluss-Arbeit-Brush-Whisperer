@@ -1,42 +1,67 @@
 package com.example.brush_wisperer.ui.WorkshopFragment
 
+import android.app.Application
 import android.content.ContentValues
 import android.net.Uri
 import android.util.Log
+import android.widget.Adapter
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.brush_wisperer.Data.Local.Model.Database.ColourDatabaseInstance.getDatabase
 import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.Data.Model.ProjectsMiniature
+import com.example.brush_wisperer.Data.Remote.ColourApi
+import com.example.brush_wisperer.Data.RepositoryColours
 import com.example.brush_wisperer.Data.RepositoryFirebase
+import com.example.brush_wisperer.ui.Adapter.WorkshopMiniatureColoursAdapter
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
 
-class WorkshopViewModel : ViewModel() {
+class WorkshopViewModel(application: Application) : AndroidViewModel(application) {
+    private val database = getDatabase(application)
+    private val repositoryColours: RepositoryColours = RepositoryColours(database, ColourApi)
     private val repository = RepositoryFirebase()
 
-    val imageUri : MutableLiveData<Uri> = MutableLiveData<Uri>()
+    val colourList = repositoryColours.colourList
+    val imageUri: MutableLiveData<Uri> = MutableLiveData<Uri>()
 
-    val miniatureImage : MutableLiveData<Uri> = MutableLiveData<Uri>()
+    val miniatureImage: MutableLiveData<Uri> = MutableLiveData<Uri>()
+
+    val projectName: MutableLiveData<String> = MutableLiveData()
+
+    val miniColourArrayList: ArrayList<FirestoreColour> = ArrayList()
+
+    fun selectProjectName(projectName: String) {
+        this.projectName.value = projectName
+    }
+
 
     //Live Data für das Popup
-    val selectedMiniature : MutableLiveData<ProjectsMiniature> = MutableLiveData()
+    val selectedMiniature: MutableLiveData<ProjectsMiniature> = MutableLiveData()
 
     //Live Data Aktuallisierung der ausgewählten Miniatur
     fun selectMiniature(miniature: ProjectsMiniature) {
         selectedMiniature.value = miniature
     }
 
-    fun firebaseCurrentUserID():String? {
+    fun firebaseCurrentUserID(): String? {
         return repository.getCurrentUserID()
     }
-    fun currentUserDB() : FirebaseFirestore {
+
+    fun currentUserDB(): FirebaseFirestore {
         return repository.getDBInstance()
     }
-    fun deleteMiniature(userID : String ,projectName: String, miniName: String) {
+
+    fun deleteMiniature(userID: String, projectName: String, miniName: String) {
         viewModelScope.launch {
             val db = currentUserDB()
             db.collection("users").document(userID).collection("projects")
@@ -51,13 +76,20 @@ class WorkshopViewModel : ViewModel() {
                 }
         }
     }
-    fun deleteMiniatureStorage(userID: String, projectName: String, miniName: String, imageRef: String) {
+
+    fun deleteMiniatureStorage(
+        userID: String,
+        projectName: String,
+        miniName: String,
+        imageRef: String
+    ) {
         viewModelScope.launch {
             val storageRef = repository.getStorageRef()
             val image = storageRef.getReferenceFromUrl(imageRef).toString()
             val imageString = image.substringAfterLast("/")
             Log.d("StorageRef", imageString)
-            val imageReference = storageRef.reference.child("$userID/projects/$projectName/$miniName/$imageString")
+            val imageReference =
+                storageRef.reference.child("$userID/projects/$projectName/$miniName/$imageString")
             imageReference.delete().addOnSuccessListener {
                 Log.d(ContentValues.TAG, "Image deleted")
             }.addOnFailureListener {
@@ -65,7 +97,8 @@ class WorkshopViewModel : ViewModel() {
             }
         }
     }
-    fun deleteProject(userID : String ,projectName: String) {
+
+    fun deleteProject(userID: String, projectName: String) {
         viewModelScope.launch {
             val db = currentUserDB()
             db.collection("users").document(userID).collection("projects")
@@ -79,13 +112,15 @@ class WorkshopViewModel : ViewModel() {
                 }
         }
     }
+
     fun deleteProjectStorage(userID: String, projectName: String, imageRef: String) {
         viewModelScope.launch {
             val storageRef = repository.getStorageRef()
             val image = storageRef.getReferenceFromUrl(imageRef).toString()
             val imageString = image.substringAfterLast("/")
             Log.d("StorageRef", imageString)
-            val imageReference = storageRef.reference.child("$userID/projects/$projectName/$imageString")
+            val imageReference =
+                storageRef.reference.child("$userID/projects/$projectName/$imageString")
             imageReference.delete().addOnSuccessListener {
                 Log.d(ContentValues.TAG, "Image deleted")
             }.addOnFailureListener {
@@ -93,19 +128,24 @@ class WorkshopViewModel : ViewModel() {
             }
         }
     }
-    fun saveColour(documentid:String,id:String, brandName: String, colourRange: String, colourPrimary: String, colourName: String, hexCode: String) {
+
+    fun saveMiniColours(
+        userID: String, projectName: String, miniName: String, colourId: String, brandName: String,
+        colourRange: String, colourPrimary: String, colourName: String, hexCode: String
+    ) {
         viewModelScope.launch {
             val db = Firebase.firestore
             val colour = FirestoreColour(
-                id= id,
+                colourId,
                 brandName = brandName,
                 colourRange = colourRange,
                 colourPrimary = colourPrimary,
                 colourName = colourName,
                 hexCode = hexCode
             )
-            db.collection("users").document(documentid).collection("colours")
-                .document(id)
+            db.collection("users").document(userID).collection("projects")
+                .document(projectName).collection("miniatures")
+                .document(miniName).collection("colours").document(colourId)
                 .set(colour)
                 .addOnSuccessListener { documentReference ->
                     Log.d(ContentValues.TAG, "DocumentSnapshot sucessfully written")
@@ -115,11 +155,13 @@ class WorkshopViewModel : ViewModel() {
                 }
         }
     }
-    fun deleteColour(documentid: String, id: String) {
+
+    fun deleteColour(userID: String, projectName: String, miniName: String, colourId: String) {
         viewModelScope.launch {
             val db = Firebase.firestore
-            db.collection("users").document(documentid).collection("colours")
-                .document(id)
+            db.collection("users").document(userID).collection("projects")
+                .document(projectName).collection("miniatures")
+                .document(miniName).collection("colours").document(colourId)
                 .delete()
                 .addOnSuccessListener { documentReference ->
                     Log.d(ContentValues.TAG, "DocumentSnapshot sucessfully deleted")
@@ -129,10 +171,29 @@ class WorkshopViewModel : ViewModel() {
                 }
         }
     }
-    fun updateFavourite(id: Int, isFavorite: Boolean) {
-        viewModelScope.launch {
-            repository.updateFavourite(id, isFavorite)
-        }
+    fun getMiniColours(projectName: String, miniName: String, adapter :WorkshopMiniatureColoursAdapter) {
+        val currentUserId = firebaseCurrentUserID()
+        val db = currentUserDB()
+        db.collection("users").document(currentUserId!!).collection("projects").document(projectName)
+            .collection("miniatures").document(miniName).collection("colours").addSnapshotListener(object :
+                EventListener<QuerySnapshot> {
+                override fun onEvent(
+                    value: QuerySnapshot?,
+                    error: FirebaseFirestoreException?
+                ) {
+                    if (error != null) {
+                        Log.e("Firestore Error", error.message.toString())
+                        return
+                    }
+                    miniColourArrayList.clear()
+                    for (dc: DocumentChange in value?.documentChanges!!) {
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            miniColourArrayList.add(dc.document.toObject(FirestoreColour::class.java))
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+                    Log.d("Data Check", "ArrayList content: ${miniColourArrayList.toString()}")
+                }
+            })
     }
-
 }
