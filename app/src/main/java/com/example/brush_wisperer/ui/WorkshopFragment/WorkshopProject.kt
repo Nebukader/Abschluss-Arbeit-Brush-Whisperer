@@ -37,7 +37,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class Workshop_project : Fragment() {
+class WorkshopProject : Fragment() {
 
     private lateinit var binding: FragmentWorkshopNewProjectBinding
     private var selectedImage: Uri? = null

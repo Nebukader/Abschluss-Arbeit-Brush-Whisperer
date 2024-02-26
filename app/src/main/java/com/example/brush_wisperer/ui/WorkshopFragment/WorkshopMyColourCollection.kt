@@ -19,7 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 
-class Workshop_my_colour_collection : Fragment() {
+class WorkshopMyColourCollection : Fragment() {
 
     private val viewModel: WorkshopViewModel by activityViewModels()
     private lateinit var binding: FragmentWorkshopMyColourCollectionBinding
@@ -44,9 +44,11 @@ class Workshop_my_colour_collection : Fragment() {
         binding.addColourBtn.setOnClickListener {
             // Navigate to the add colour fragment
             findNavController().popBackStack()
-            findNavController().navigate(Workshop_my_colour_collectionDirections.actionWorkshopMyColourCollectionToWorkshopColourList())
+            findNavController().navigate(WorkshopMyColourCollectionDirections.actionWorkshopMyColourCollectionToWorkshopColourList())
         }
         // get the user's favourite colours
+
+        //TODO: Ins ViewModel auslagern
 
         fun getFavouriteColours() {
             val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.toString()
@@ -78,7 +80,7 @@ class Workshop_my_colour_collection : Fragment() {
         binding.brandSpinner.adapter = spinnerAdapter
 
         binding.addColourBtn.setOnClickListener {
-            findNavController().navigate(Workshop_my_colour_collectionDirections.actionWorkshopMyColourCollectionToWorkshopColourList())
+            findNavController().navigate(WorkshopMyColourCollectionDirections.actionWorkshopMyColourCollectionToWorkshopColourList())
         }
     }
 
