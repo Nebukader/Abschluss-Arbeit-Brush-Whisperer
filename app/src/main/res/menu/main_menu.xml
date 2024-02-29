@@ -14,6 +14,10 @@
             android:icon="@drawable/brush_icon"
             android:title="My Workshop" />
         <item
+            android:id="@+id/tutorialCategorie"
+            android:icon="@drawable/tutorial_icon"
+            android:title="Tutorials" />
+        <item
             android:id="@+id/settingsFragment"
             android:icon="@drawable/settings_icon"
             android:title="Settings" />
