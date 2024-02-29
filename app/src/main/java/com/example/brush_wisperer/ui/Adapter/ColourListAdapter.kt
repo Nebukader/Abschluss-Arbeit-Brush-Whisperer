@@ -71,6 +71,17 @@ class ColourListAdapter(
                 )
             }
         }
+        binding.wishlistBTN.setOnClickListener{
+            viewModel.saveWishlist(
+                colourData.id.toString(),
+                colourData.brand_name,
+                colourData.colour_range,
+                colourData.colour_primary,
+                colourData.colour_name,
+                colourData.hexcode
+            )
+
+        }
 
     }
 
