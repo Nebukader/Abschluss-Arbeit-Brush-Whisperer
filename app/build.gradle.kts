@@ -95,4 +95,7 @@ dependencies {
     implementation ("androidx.camera:camera-lifecycle:1.3.1")
     // CameraX View class
     implementation ("androidx.camera:camera-view:1.3.1")
+    //Android Youtube Player
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+
 }
