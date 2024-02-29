@@ -8,34 +8,6 @@
     android:background="@color/md_theme_background_mediumContrast"
     tools:context=".ui.HomeFragment.HomeFragment">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/welcomeTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/md_theme_onBackground"
-            android:layout_gravity="left"
-            android:text="@string/welcome" />
-
-        <TextView
-            android:id="@+id/usernameTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/md_theme_onBackground"
-            android:layout_gravity="left"
-            android:text="@string/username" />
-
-
-    </LinearLayout>
-
     <TextView
         android:id="@+id/lastViewedColoursTV"
         android:layout_width="wrap_content"
@@ -48,7 +20,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recentColoursRecyclerView"
+        android:id="@+id/lastWishedColoursRV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -56,7 +28,7 @@
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="5"
-        tools:listitem="@layout/last_view_colour_item">
+        tools:listitem="@layout/home_last_wished_item">
 
     </androidx.recyclerview.widget.RecyclerView>
 
