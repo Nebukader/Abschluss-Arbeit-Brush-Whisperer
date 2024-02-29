@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
-const val BASE_URL = "http://dockerpi/back/api/"
+const val BASE_URL = "http://brushwhisperer.ddns.net:9474/back/api/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
