@@ -6,11 +6,16 @@
     android:layout_height="wrap_content"
     >
 
-    <ImageView
-        android:id="@+id/imageView"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/colour_shapeIV"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/itemtest" />
+        app:srcCompat="@drawable/colour_item_list_shape" />
 </androidx.constraintlayout.widget.ConstraintLayout>
