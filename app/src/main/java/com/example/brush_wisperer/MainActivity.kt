@@ -78,6 +78,11 @@ class MainActivity : AppCompatActivity() {
                     updateToolbarTitle("Workshop")
                     true
                 }
+                R.id.tutorialCategorie -> {
+                    navController.navigate(R.id.tutorialCategorie)
+                    updateToolbarTitle("Tutorial")
+                    true
+                }
                 R.id.settingsFragment -> {
                     navController.navigate(R.id.settingsFragment)
                     updateToolbarTitle("Settings")
@@ -109,6 +114,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.workshop_categorie -> R.id.workshop_categorie
                 R.id.workshop_colour_list -> R.id.workshop_categorie
                 R.id.workshop_my_colour_collection -> R.id.workshop_categorie
+                R.id.workshop_colour_list -> R.id.workshop_categorie
+                R.id.workshop_my_colour_collection -> R.id.workshop_categorie
+                R.id.tutorialCategorie -> R.id.tutorialCategorie
+                R.id.tutorialBeginner -> R.id.tutorialCategorie
                 R.id.settingsFragment -> R.id.settingsFragment
                 else -> currentMenuItemId
             }
