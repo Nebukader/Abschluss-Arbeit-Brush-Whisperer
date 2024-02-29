@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_homeFragment_to_workshop_categorie"
             app:destination="@id/workshop_categorie" />
+        <action
+            android:id="@+id/action_homeFragment_to_tutorialCategorie"
+            app:destination="@id/tutorialCategorie" />
     </fragment>
     <fragment
         android:id="@+id/homeDetailFragment"
@@ -84,6 +87,9 @@
         <action
             android:id="@+id/action_workshop_categorie_to_categorieFragment"
             app:destination="@id/categorieFragment" />
+        <action
+            android:id="@+id/action_workshop_categorie_to_workshopWishlist"
+            app:destination="@id/workshopWishlist" />
     </fragment>
     <fragment
         android:id="@+id/workshop_my_colour_collection"
@@ -128,4 +134,72 @@
         android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopPopupColourAdd"
         android:label="Workshop_popup_colour_add"
         tools:layout="@layout/fragment_workshop_popup_colour_add"/>
+    <fragment
+        android:id="@+id/workshopWishlist"
+        android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopWishlist"
+        android:label="WorkshopWishlist"
+        tools:layout="@layout/fragment_workshop_wishlist"/>
+    <fragment
+        android:id="@+id/tutorialCategorie"
+        android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialCategorie"
+        android:label="TutorialCategorie"
+        tools:layout="@layout/fragment_tutorial_categorie">
+        <action
+            android:id="@+id/action_tutorialCategorie_to_tutorialBeginner"
+            app:destination="@id/tutorialBeginner" />
+        <action
+            android:id="@+id/action_tutorialCategorie_to_tutorialAdvanced"
+            app:destination="@id/tutorialAdvanced" />
+        <action
+            android:id="@+id/action_tutorialCategorie_to_tutorialSpeedPaint"
+            app:destination="@id/tutorialSpeedPaint" />
+        <action
+            android:id="@+id/action_tutorialCategorie_to_tutorialAirbrush"
+            app:destination="@id/tutorialAirbrush" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorialBeginner"
+        android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialBeginner"
+        android:label="TutorialBeginner"
+        tools:layout="@layout/fragment_tutorial_beginner">
+        <action
+            android:id="@+id/action_tutorialBeginner_to_tutorialDetail"
+            app:destination="@id/tutorialDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorialDetail"
+        android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialDetail"
+        android:label="TutorialDetail"
+        tools:layout="@layout/fragment_tutorial_detail">
+        <argument
+            android:name="videoID"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorialAdvanced"
+        android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialAdvanced"
+        android:label="TutorialAdvanced"
+        tools:layout="@layout/fragment_tutorial_advanced">
+        <action
+            android:id="@+id/action_tutorialAdvanced_to_tutorialDetail"
+            app:destination="@id/tutorialDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorialSpeedPaint"
+        android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialSpeedPaint"
+        android:label="TutorialSpeedPaint"
+        tools:layout="@layout/fragment_tutorial_speed_paint">
+        <action
+            android:id="@+id/action_tutorialSpeedPaint_to_tutorialDetail"
+            app:destination="@id/tutorialDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorialAirbrush"
+        android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialAirbrush"
+        android:label="TutorialAirbrush"
+        tools:layout="@layout/fragment_tutorial_airbrush">
+        <action
+            android:id="@+id/action_tutorialAirbrush_to_tutorialDetail"
+            app:destination="@id/tutorialDetail" />
+    </fragment>
 </navigation>
