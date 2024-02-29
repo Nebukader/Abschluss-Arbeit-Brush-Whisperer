@@ -7,17 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.databinding.FragmentWorkshopCategorieBinding
-
 class WorkshopCategorie : Fragment() {
 
-    private var _binding: FragmentWorkshopCategorieBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: FragmentWorkshopCategorieBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentWorkshopCategorieBinding.inflate(inflater, container, false)
+    ): View {
+        binding = FragmentWorkshopCategorieBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -25,12 +22,15 @@ class WorkshopCategorie : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.colourCollectionCV.setOnClickListener {
-            val action =
-                WorkshopCategorieDirections.actionWorkshopCategorieToWorkshopMyColourCollection()
+            val action = WorkshopCategorieDirections.actionWorkshopCategorieToWorkshopMyColourCollection()
             findNavController().navigate(action)
         }
         binding.projectsCV.setOnClickListener {
             val action = WorkshopCategorieDirections.actionWorkshopCategorieToWorkshopNewProject()
+            findNavController().navigate(action)
+        }
+        binding.wishlistCV.setOnClickListener {
+            val action = WorkshopCategorieDirections.actionWorkshopCategorieToWorkshopWishlist()
             findNavController().navigate(action)
         }
     }
