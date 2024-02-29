@@ -5,20 +5,54 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.brush_wisperer.Data.Local.Model.BlogPostEntity
 import com.example.brush_wisperer.Data.Local.Model.Database.BlogPostDatabaseInstance
+import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.Data.RepositoryBlogPostNews
+import com.example.brush_wisperer.Data.RepositoryFirebase
+import com.example.brush_wisperer.ui.Adapter.HomeLastWishedAdapter
+import com.example.brush_wisperer.ui.Adapter.WorkshopWishlistAdapter
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel (application: Application): AndroidViewModel(application) {
 
-    private val repository = RepositoryBlogPostNews(BlogPostDatabaseInstance.getDatabase(application))
+    private val repository =
+        RepositoryBlogPostNews(BlogPostDatabaseInstance.getDatabase(application))
+    private val firebaseRepo = RepositoryFirebase()
 
     val news: LiveData<List<BlogPostEntity>> = repository.allNews
 
-    fun insertNews(){
+    private val _wishlistArrayList = MutableLiveData<List<FirestoreColour>>()
+    val wishlistArrayList: LiveData<List<FirestoreColour>> get() = _wishlistArrayList
+
+    var wishlistListener: ListenerRegistration? = null
+
+    init {
+        updateNews()
+        getWishlistColours(HomeLastWishedAdapter(wishlistArrayList.value ?: emptyList()))
+    }
+
+    private suspend fun firebaseCurrentUserID(): String? {
+        return withContext(Dispatchers.IO) {
+            firebaseRepo.getCurrentUserID()
+        }
+    }
+
+    private fun currentUserDB(): FirebaseFirestore {
+        return firebaseRepo.getDBInstance()
+    }
+
+    fun insertNews() {
         viewModelScope.launch(Dispatchers.IO) {
             val news = repository.scrapeBlogPost("/blogs/explore/tagged/news")
             for (each in news) {
@@ -28,29 +62,29 @@ class HomeViewModel (application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun updateNews(){
+    fun updateNews() {
         viewModelScope.launch(Dispatchers.IO) {
             val exitstingNews = repository.allNews.value ?: emptyList()
             Log.d("news", "Existing News: $exitstingNews")
             val fetchedNews = repository.scrapeBlogPost("/blogs/explore/tagged/news")
             Log.d("news", "Fetched News: $fetchedNews")
 
-            for (fetchedNew in fetchedNews){
+            for (fetchedNew in fetchedNews) {
                 var isNew = true
-                for (existingNew in exitstingNews){
-                    if (fetchedNew.title == existingNew.title){
+                for (existingNew in exitstingNews) {
+                    if (fetchedNew.title == existingNew.title) {
                         isNew = false
                         break
                     }
                 }
-                if (isNew){
+                if (isNew) {
                     repository.insertNews(fetchedNew)
                 }
             }
         }
     }
 
-    fun getNews(){
+    fun getNews() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.scrapeWebPage()
             val news = repository.scrapeBlogPost("/blogs/explore/tagged/news")
@@ -58,12 +92,35 @@ class HomeViewModel (application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun deleteAllNews(){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAllNews()
+    fun getWishlistColours(adapter: HomeLastWishedAdapter) {
+        viewModelScope.launch {
+            val currentUserId = firebaseCurrentUserID()
+            val db = currentUserDB()
+            wishlistListener = db.collection("users").document(currentUserId!!).collection("wishlist").addSnapshotListener(object :
+                EventListener<QuerySnapshot> {
+                override fun onEvent(
+                    value: QuerySnapshot?,
+                    error: FirebaseFirestoreException?
+                ) {
+                    if (error != null) {
+                        Log.e("Firestore Error", error.message.toString())
+                        return
+                    }
+                    val tempList = mutableListOf<FirestoreColour>()
+                    for (dc: DocumentChange in value?.documentChanges!!) {
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            tempList.add(dc.document.toObject(FirestoreColour::class.java))
+                        }else if (dc.type == DocumentChange.Type.REMOVED) {
+                            tempList.remove(dc.document.toObject(FirestoreColour::class.java))
+                        }
+                    }
+                    _wishlistArrayList.value = tempList
+                    adapter.notifyDataSetChanged()
+                    Log.d("Data Check", "ArrayList content: ${_wishlistArrayList.value?.toString()}")
+                }
+            })
         }
     }
 }
-
 
 
