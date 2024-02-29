@@ -13,9 +13,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentHomeBinding
+import com.example.brush_wisperer.ui.Adapter.HomeLastWishedAdapter
 import com.example.brush_wisperer.ui.Adapter.NewsAdapter
+import com.example.brush_wisperer.ui.Adapter.WorkshopWishlistAdapter
+import com.example.brush_wisperer.ui.WorkshopFragment.WorkshopViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+
+const val TAG = "HomeFragment"
 
 class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
@@ -29,48 +34,35 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
 
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val binding = FragmentHomeBinding.bind(view)
-
-
         swipeRefreshLayout = binding.swipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener(this)
 
-
-        viewModel.updateNews()
-
-        viewModel.news.observe(viewLifecycleOwner) { news ->
-            news?.let {
-                binding.newsRV.adapter = NewsAdapter(it)
+        viewModel.wishlistArrayList.observe(viewLifecycleOwner) { wishlist ->
+            wishlist?.let {
+                val lastFiveItems = it.takeLast(5)
+                val adapter = HomeLastWishedAdapter(lastFiveItems)
+                val recyclerView = binding.lastWishedColoursRV
+                recyclerView.adapter = adapter
             }
         }
 
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser != null) {
-            val userId = currentUser.uid
-            val docRef = FirebaseFirestore.getInstance().collection("users").document(userId!!)
-            Log.d("TAG", "users: $docRef")
-            docRef.get()
-                ?.addOnSuccessListener { document ->
-                    if (document != null) {
-                        val name = document.getString("username")
-                        binding.usernameTV?.let {
-                            it.text = name
-                        }
-                    } else {
-                        Log.d("TAG", "No such document")
-                    }
+
+        viewModel.news.observe(viewLifecycleOwner) { news ->
+            news?.let {
+                if (it.isEmpty()) {
+                    viewModel.updateNews()
                 }
-                ?.addOnFailureListener { exception ->
-                    Log.d("TAG", "get failed with ", exception)
-                }
-        }else{
-            Toast.makeText(context, "You are not logged in anymore", Toast.LENGTH_SHORT).show()
+                binding.newsRV.adapter = NewsAdapter(it)
+            }
         }
-    }
+}
 
     override fun onRefresh() {
         Handler(Looper.getMainLooper()).postDelayed({
