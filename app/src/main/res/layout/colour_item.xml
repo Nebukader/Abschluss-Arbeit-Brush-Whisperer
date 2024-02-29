@@ -78,15 +78,20 @@
                 app:layout_constraintStart_toEndOf="@+id/colour_itemIV"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/button2"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/wishlistBTN"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_gravity="center"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="Button"
+                android:layout_weight="1"
+                android:background="@drawable/wishlist_shape"
+                android:clickable="true"
+                android:scaleType="center"
+                android:src="@drawable/wishlist_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/colour_addToCollectionBtn"
