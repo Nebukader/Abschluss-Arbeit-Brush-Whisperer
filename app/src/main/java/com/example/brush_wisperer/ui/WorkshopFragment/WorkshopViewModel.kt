@@ -2,6 +2,7 @@ package com.example.brush_wisperer.ui.WorkshopFragment
 
 import android.app.Application
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
 import android.widget.Adapter
@@ -15,12 +16,14 @@ import com.example.brush_wisperer.Data.Remote.ColourApi
 import com.example.brush_wisperer.Data.RepositoryColours
 import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.example.brush_wisperer.ui.Adapter.WorkshopMiniatureColoursAdapter
+import com.example.brush_wisperer.ui.Adapter.WorkshopWishlistAdapter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
@@ -39,6 +42,10 @@ class WorkshopViewModel(application: Application) : AndroidViewModel(application
     val projectName: MutableLiveData<String> = MutableLiveData()
 
     val miniColourArrayList: ArrayList<FirestoreColour> = ArrayList()
+
+    val wishlistArrayList: ArrayList<FirestoreColour> = ArrayList()
+
+    var wishlistListener : ListenerRegistration? = null
 
     fun selectProjectName(projectName: String) {
         this.projectName.value = projectName
@@ -195,5 +202,48 @@ class WorkshopViewModel(application: Application) : AndroidViewModel(application
                     Log.d("Data Check", "ArrayList content: ${miniColourArrayList.toString()}")
                 }
             })
+    }
+    fun getWishlistColours(adapter : WorkshopWishlistAdapter) {
+        val currentUserId = firebaseCurrentUserID()
+        val db = currentUserDB()
+        wishlistListener = db.collection("users").document(currentUserId!!).collection("wishlist").addSnapshotListener(object :
+                EventListener<QuerySnapshot> {
+                override fun onEvent(
+                    value: QuerySnapshot?,
+                    error: FirebaseFirestoreException?
+                ) {
+                    if (error != null) {
+                        Log.e("Firestore Error", error.message.toString())
+                        return
+                    }
+                    for (dc: DocumentChange in value?.documentChanges!!) {
+                        if (dc.type == DocumentChange.Type.ADDED) {
+                            wishlistArrayList.add(dc.document.toObject(FirestoreColour::class.java))
+                        }else if (dc.type == DocumentChange.Type.REMOVED) {
+                            wishlistArrayList.remove(dc.document.toObject(FirestoreColour::class.java))
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+                    Log.d("Data Check", "ArrayList content: ${wishlistArrayList.toString()}")
+                }
+            })
+    }
+    fun removeWishlistListener() {
+        wishlistListener?.remove()
+        wishlistArrayList.clear()
+    }
+    fun deleteFromWishlist(colourId: String) {
+        viewModelScope.launch {
+            val userId = firebaseCurrentUserID()
+            val db = currentUserDB()
+            db.collection("users").document(userId!!).collection("wishlist").document(colourId)
+                .delete()
+                .addOnSuccessListener { documentReference ->
+                    Log.d(ContentValues.TAG, "DocumentSnapshot sucessfully deleted")
+                }
+                .addOnFailureListener() { e ->
+                    Log.w(ContentValues.TAG, "Error deleting document", e)
+                }
+        }
     }
 }
