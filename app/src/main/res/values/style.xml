@@ -42,4 +42,11 @@
         <item name="android:fontFamily">@font/rowdies_light</item>
     </style>
 
+    <style name="tutorialImageShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+        <item name="strokeColor">#000000</item>
+        <item name="strokeWidth">4dp</item>
+    </style>
+
 </resources>
