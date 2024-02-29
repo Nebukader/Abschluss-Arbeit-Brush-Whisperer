@@ -1,8 +1,10 @@
 package com.example.brush_wisperer.ui.ColourFragment
 
 import android.app.Application
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +13,9 @@ import com.example.brush_wisperer.Data.Local.Model.Database.ColourDatabaseInstan
 import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.Data.Remote.ColourApi
 import com.example.brush_wisperer.Data.RepositoryColours
+import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
@@ -20,6 +24,7 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
 
     private val database = getDatabase(application)
     private val repository = RepositoryColours(database, ColourApi)
+    private val repoFirebase = RepositoryFirebase()
 
     private val _loading = MutableLiveData<ApiStatus>()
     val loading: LiveData<ApiStatus>
@@ -27,9 +32,17 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
 
     val colourList = repository.colourList
 
+    fun firebaseCurrentUserID(): String? {
+        return repoFirebase.getCurrentUserID()
+    }
+
+    fun currentUserDB(): FirebaseFirestore {
+        return repoFirebase.getDBInstance()
+    }
+
     init {
-    loadData()
-   }
+        loadData()
+    }
 
     private fun loadData() {
         viewModelScope.launch {
@@ -50,11 +63,19 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun saveColour(documentid:String,id:String, brandName: String, colourRange: String, colourPrimary: String, colourName: String, hexCode: String) {
+    fun saveColour(
+        documentid: String,
+        id: String,
+        brandName: String,
+        colourRange: String,
+        colourPrimary: String,
+        colourName: String,
+        hexCode: String
+    ) {
         viewModelScope.launch {
             val db = Firebase.firestore
             val colour = FirestoreColour(
-                id= id,
+                id = id,
                 brandName = brandName,
                 colourRange = colourRange,
                 colourPrimary = colourPrimary,
@@ -72,6 +93,7 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
                 }
         }
     }
+
     fun deleteColour(documentid: String, id: String) {
         viewModelScope.launch {
             val db = Firebase.firestore
@@ -86,9 +108,44 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
                 }
         }
     }
+
     fun updateFavourite(id: Int, isFavorite: Boolean) {
         viewModelScope.launch {
             repository.updateFavourite(id, isFavorite)
+        }
+    }
+
+    fun saveWishlist(
+        colourId: String,
+        brandName: String,
+        colourRange: String,
+        colourPrimary: String,
+        colourName: String,
+        hexcode: String
+    ) {
+        viewModelScope.launch {
+            val userID = firebaseCurrentUserID().toString()
+            val db = currentUserDB()
+            val colour = FirestoreColour(
+                colourId,
+                brandName,
+                colourRange,
+                colourPrimary,
+                colourName,
+                hexcode
+            )
+            db.collection("users").document(userID).collection("wishlist").document(colourId)
+                .set(colour)
+                .addOnSuccessListener { documentReference ->
+                }
+                .addOnFailureListener() { e ->
+                    Toast.makeText(
+                        getApplication(),
+                        "Error adding Colour to Wishlist",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
         }
     }
 
