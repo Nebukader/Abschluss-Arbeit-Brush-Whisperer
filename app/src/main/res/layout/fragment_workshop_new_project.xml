@@ -19,19 +19,6 @@
         app:layout_constraintTop_toBottomOf="@+id/dividerTop"
         tools:listitem="@layout/workshop_project_item"/>
 
-    <TextView
-        android:id="@+id/titleTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:text="My Projects"
-        android:textAlignment="center"
-        android:textAppearance="@style/HeaderTittle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
         android:layout_width="match_parent"
@@ -43,7 +30,7 @@
         app:cardElevation="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTV">
+        app:layout_constraintTop_toTopOf="parent">
 
         <SearchView
             android:id="@+id/searchView"

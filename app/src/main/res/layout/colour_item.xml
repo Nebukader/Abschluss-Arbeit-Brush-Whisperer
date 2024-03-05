@@ -40,9 +40,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_weight="1"
-                android:padding="8dp"
                 android:text="Colour Name"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/colour_shapeIV"
                 app:layout_constraintTop_toTopOf="parent" />

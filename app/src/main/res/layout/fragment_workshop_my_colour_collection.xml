@@ -7,38 +7,27 @@
     android:orientation="vertical"
     tools:context=".ui.WorkshopFragment.WorkshopMyColourCollection">
 
-    <TextView
-        android:id="@+id/titleTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:text="My Colour Collection"
-        android:textAlignment="center"
-        android:textAppearance="@style/HeaderTittle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTV">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Spinner
             android:id="@+id/brandSpinner"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_gravity="center"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_gravity="center" />
+            android:layout_marginEnd="8dp" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
