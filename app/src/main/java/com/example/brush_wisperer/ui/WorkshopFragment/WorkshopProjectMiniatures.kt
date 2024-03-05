@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.ContentValues
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -21,7 +20,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
-import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.Data.Model.ProjectsMiniature
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentWorkshopProjectMiniaturesBinding
@@ -29,7 +27,6 @@ import com.example.brush_wisperer.databinding.WorkshopDialogAddMiniatureBinding
 import com.example.brush_wisperer.databinding.WorkshopDialogChooseImageBinding
 import com.example.brush_wisperer.databinding.WorkshopMiniaturePopupBinding
 import com.example.brush_wisperer.ui.Adapter.ProjectsMiniatureAdapter
-import com.example.brush_wisperer.ui.Adapter.WorkshopColourCollectionAdapter
 import com.example.brush_wisperer.ui.Adapter.WorkshopMiniatureColoursAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
@@ -52,20 +49,18 @@ class WorkshopProjectMiniatures : Fragment() {
     private var imageTaken = false
     private val viewModel: WorkshopViewModel by activityViewModels()
     private lateinit var miniatureArrayList: ArrayList<ProjectsMiniature>
-    private lateinit var miniColourAdapter: WorkshopMiniatureColoursAdapter
     private lateinit var adapter: ProjectsMiniatureAdapter
     private val safeArgs: WorkshopProjectMiniaturesArgs by navArgs()
     private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //region Photo and Gallery
         photoUri = activity?.contentResolver?.let {
             val contentValues = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, "project_image.jpg")
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-                }
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
             }
             it.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
         }
@@ -91,6 +86,7 @@ class WorkshopProjectMiniatures : Fragment() {
                 Toast.makeText(context, "Failed to pick image", Toast.LENGTH_SHORT).show()
             }
         }
+        //endregion
     }
 
     override fun onCreateView(
@@ -108,8 +104,6 @@ class WorkshopProjectMiniatures : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         getMiniatures()
         binding.myMiniaturesRV.adapter = adapter
-
-        //im viewmodel
         viewModel.projectName.value = safeArgs.projectName
 
         binding.titleTV.text = safeArgs.projectName
@@ -129,18 +123,22 @@ class WorkshopProjectMiniatures : Fragment() {
                 dialogBinding.minatureTitleTV.text = it.miniName
                 dialogBinding.miniatureImageIV.load(it.miniImage)
 
-
-                dialogBinding.addColoursBTN.setOnClickListener {
-                    val action =
-                        WorkshopProjectMiniaturesDirections.actionWorkshopProjectMiniaturesToWorkshopPopupColourAdd()
-                    findNavController().navigate(action)
-                }
                 dialogBuilder.setView(dialogBinding.root)
                 val dialog = dialogBuilder.create()
                 dialog.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
                 dialog.show()
+
+                // Add Colours to Miniature in a new Fragment
+                dialogBinding.addColoursBTN.setOnClickListener {
+                    val action =
+                        WorkshopProjectMiniaturesDirections.actionWorkshopProjectMiniaturesToWorkshopPopupColourAdd()
+                    findNavController().navigate(action)
+                    dialog.dismiss()
+                }
             }
         }
+
+        //region Add Miniature Dialog
         val dialogBuilder = AlertDialog.Builder(requireContext())
         val dialogBinding = WorkshopDialogAddMiniatureBinding.inflate(layoutInflater)
         val positiveButton = dialogBinding.addMiniatureBTN
@@ -226,12 +224,15 @@ class WorkshopProjectMiniatures : Fragment() {
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-            dialog.show() // Dialog sofort anzeigen
+            dialog.show()
             viewModel.miniatureImage.value = null
         }
+        //endregion
     }
 
-    fun getMiniatures() {
+
+    //TODO in das viewModel auslagern
+    private fun getMiniatures() {
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid.toString()
         db = FirebaseFirestore.getInstance()
         db.collection("users").document(currentUserId).collection("projects")
