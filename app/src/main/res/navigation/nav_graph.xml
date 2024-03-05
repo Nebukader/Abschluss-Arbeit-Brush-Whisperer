@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.brush_wisperer.ui.HomeFragment.HomeFragment"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_homeDetailFragment"
@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/homeDetailFragment"
         android:name="com.example.brush_wisperer.ui.HomeFragment.HomeDetailFragment"
-        android:label="fragment_home_detail"
+        android:label="Home"
         tools:layout="@layout/fragment_home_detail" >
         <argument
             android:name="postLink"
@@ -48,7 +48,7 @@
     <fragment
         android:id="@+id/categorieFragment"
         android:name="com.example.brush_wisperer.ui.ColourFragment.CategorieFragment"
-        android:label="fragment_categorie"
+        android:label="Colour Categorie"
         tools:layout="@layout/fragment_categorie" >
         <action
             android:id="@+id/action_categorieFragment_to_colourRangesAndColourListFragment"
@@ -57,17 +57,17 @@
     <fragment
         android:id="@+id/colourRangesAndColourListFragment"
         android:name="com.example.brush_wisperer.ui.ColourFragment.ColourRangesAndColourListFragment"
-        android:label="fragment_colour_ranges_and_colour_list"
+        android:label="Colour List"
         tools:layout="@layout/fragment_colour_ranges_and_colour_list" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.brush_wisperer.ui.SettingsFragment.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="Settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/verificationFragment"
         android:name="com.example.brush_wisperer.ui.LoginFragment.VerificationFragment"
-        android:label="fragment_verification"
+        android:label="Verification"
         tools:layout="@layout/fragment_verification" >
         <action
             android:id="@+id/action_verificationFragment_to_homeFragment"
@@ -76,7 +76,7 @@
     <fragment
         android:id="@+id/workshop_categorie"
         android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopCategorie"
-        android:label="fragment_workshop_categorie"
+        android:label="Workshop"
         tools:layout="@layout/fragment_workshop_categorie" >
         <action
             android:id="@+id/action_workshop_categorie_to_workshop_my_colour_collection"
@@ -94,7 +94,7 @@
     <fragment
         android:id="@+id/workshop_my_colour_collection"
         android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopMyColourCollection"
-        android:label="fragment_workshop_my_colour_collection"
+        android:label="My Colour Collection"
         tools:layout="@layout/fragment_workshop_my_colour_collection" >
         <action
             android:id="@+id/action_workshop_my_colour_collection_to_workshop_colour_list"
@@ -103,12 +103,12 @@
     <fragment
         android:id="@+id/workshop_colour_list"
         android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopColourList"
-        android:label="Workshop_colour_list"
+        android:label="Colour List"
         tools:layout="@layout/fragment_workshop_colour_list"/>
     <fragment
         android:id="@+id/workshop_new_project"
         android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopProject"
-        android:label="Workshop_new_project"
+        android:label="New Project"
         tools:layout="@layout/fragment_workshop_new_project">
         <action
             android:id="@+id/action_workshop_new_project_to_workshop_project_miniatures"
@@ -117,7 +117,7 @@
     <fragment
         android:id="@+id/workshop_project_miniatures"
         android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopProjectMiniatures"
-        android:label="Workshop_project_miniatures"
+        android:label="My Miniatures"
         tools:layout="@layout/fragment_workshop_project_miniatures">
         <argument
             android:name="projectName"
@@ -127,22 +127,22 @@
             app:argType="string" />
         <action
             android:id="@+id/action_workshop_project_miniatures_to_workshop_popup_colour_add"
-            app:destination="@id/workshop_popup_colour_add" />
+            app:destination="@id/workshop_miniature_colourlist" />
     </fragment>
     <fragment
-        android:id="@+id/workshop_popup_colour_add"
-        android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopPopupColourAdd"
-        android:label="Workshop_popup_colour_add"
+        android:id="@+id/workshop_miniature_colourlist"
+        android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopMiniatureColourList"
+        android:label="Colours for my Miniature"
         tools:layout="@layout/fragment_workshop_popup_colour_add"/>
     <fragment
         android:id="@+id/workshopWishlist"
         android:name="com.example.brush_wisperer.ui.WorkshopFragment.WorkshopWishlist"
-        android:label="WorkshopWishlist"
+        android:label="Wishlist"
         tools:layout="@layout/fragment_workshop_wishlist"/>
     <fragment
         android:id="@+id/tutorialCategorie"
         android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialCategorie"
-        android:label="TutorialCategorie"
+        android:label="Tutorials"
         tools:layout="@layout/fragment_tutorial_categorie">
         <action
             android:id="@+id/action_tutorialCategorie_to_tutorialBeginner"
@@ -160,7 +160,7 @@
     <fragment
         android:id="@+id/tutorialBeginner"
         android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialBeginner"
-        android:label="TutorialBeginner"
+        android:label="Beginner Tutorials"
         tools:layout="@layout/fragment_tutorial_beginner">
         <action
             android:id="@+id/action_tutorialBeginner_to_tutorialDetail"
@@ -169,7 +169,7 @@
     <fragment
         android:id="@+id/tutorialDetail"
         android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialDetail"
-        android:label="TutorialDetail"
+        android:label="Video Tutorial"
         tools:layout="@layout/fragment_tutorial_detail">
         <argument
             android:name="videoID"
@@ -178,7 +178,7 @@
     <fragment
         android:id="@+id/tutorialAdvanced"
         android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialAdvanced"
-        android:label="TutorialAdvanced"
+        android:label="Advanced Tutorials"
         tools:layout="@layout/fragment_tutorial_advanced">
         <action
             android:id="@+id/action_tutorialAdvanced_to_tutorialDetail"
@@ -187,7 +187,7 @@
     <fragment
         android:id="@+id/tutorialSpeedPaint"
         android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialSpeedPaint"
-        android:label="TutorialSpeedPaint"
+        android:label="SpeedPaint Tutorials"
         tools:layout="@layout/fragment_tutorial_speed_paint">
         <action
             android:id="@+id/action_tutorialSpeedPaint_to_tutorialDetail"
@@ -196,7 +196,7 @@
     <fragment
         android:id="@+id/tutorialAirbrush"
         android:name="com.example.brush_wisperer.ui.TutorialFragment.TutorialAirbrush"
-        android:label="TutorialAirbrush"
+        android:label="Airbrush Tutorials"
         tools:layout="@layout/fragment_tutorial_airbrush">
         <action
             android:id="@+id/action_tutorialAirbrush_to_tutorialDetail"
