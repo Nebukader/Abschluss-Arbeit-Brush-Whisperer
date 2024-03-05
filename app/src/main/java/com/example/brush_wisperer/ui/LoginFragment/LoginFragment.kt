@@ -1,17 +1,16 @@
 package com.example.brush_wisperer.ui.LoginFragment
 
-import com.example.brush_wisperer.MainActivity
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.brush_wisperer.MainActivity
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -24,7 +23,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginFragment : Fragment() {
 
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by activityViewModels()
     private lateinit var binding: FragmentLoginBinding
     private lateinit var client: GoogleSignInClient
 
@@ -33,12 +32,6 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(layoutInflater)
-
-        val application = requireNotNull(this.activity).application
-        val viewModelFactory = LoginViewModelFactory(application)
-
-        viewModel = activityViewModels<LoginViewModel> { viewModelFactory }.value
-
         return binding.root
     }
 
@@ -48,14 +41,12 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //verify if user email is verified
-        viewModel =  ViewModelProvider(this).get(LoginViewModel::class.java)
         viewModel.navigateToVerification.observe(viewLifecycleOwner, Observer {
             if (it){
                 findNavController().navigate(R.id.action_loginFragment_to_verificationFragment)
                 viewModel.navigateToVerification.value = false
             }
         })
-
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
                 user ->
@@ -66,21 +57,18 @@ class LoginFragment : Fragment() {
         })
 
 
-
         binding.loginButton.setOnClickListener {
-            viewModel.loginDialog(
+            viewModel.login(
                 binding.emailEditText.text.toString(),
                 binding.passwordEditText.text.toString()
             )
         }
 
 
-
-        // Register
+        //Register
         binding.signUp.setOnClickListener {
             viewModel.signUpDialog(view)
         }
-
 
         // Google Login with Firebase
         val option = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -93,10 +81,6 @@ class LoginFragment : Fragment() {
             val intent = client.signInIntent
             startActivityForResult(intent, 10001)
         }
-
-        //binding.skipBT.setOnClickListener {
-        //    viewModel.signInAnonymously()
-        //}
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
