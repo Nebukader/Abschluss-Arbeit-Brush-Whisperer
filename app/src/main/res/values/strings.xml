@@ -20,11 +20,20 @@
     <string name="Cancel">Cancel</string>
     <string name="signup_success">Signup Success</string>
     <string name="passwords_or_emails_do_not_match">Passwords or emails do not match</string>
-
+    <!-- Navigation Drawer -->
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
     <!-- Home Screen -->
     <string name="whatsNew">Whats New ?</string>
     <string name="lastWishedColours">Last Wished Colours</string>
     <string name="welcome">"Welcome : "</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="guest">Guest</string>
+    <string name="brands">Brands</string>
+    <string name="colour_collection">Colour Collection</string>
+    <string name="have_always_your_collection_with_you">Have always your Collection with you</string>
+    <string name="projects">Projects</string>
+    <string name="create_and_manage_your_projects">Create and manage your Projects</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="all_your_missing_colours_in_one_place">All your Missing Colours in one place</string>
+
 </resources>
