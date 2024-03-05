@@ -1,15 +1,14 @@
 package com.example.brush_wisperer.ui.LoginFragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.MainActivity
 import com.example.brush_wisperer.R
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import java.util.Timer
 import java.util.TimerTask
@@ -29,7 +28,7 @@ class VerificationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Erstellt einen Timer, der alle 5 Sekunden die E-Mail-Bestätigung überprüft
+        // Creates a timer that checks for email verification every 5 seconds
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
@@ -37,6 +36,7 @@ class VerificationFragment : Fragment() {
                 user?.reload()?.addOnSuccessListener {
                     if (user.isEmailVerified) {
                         // Benutzer hat seine E-Mail bestätigt, navigieren Sie zum Home-Bildschirm
+                        // User has verified their email, navigate to the home screen
                         findNavController().navigate(R.id.action_verificationFragment_to_homeFragment)
                         val toolbar = (activity as MainActivity).showToolBar(View.VISIBLE)
                         timer.cancel() // Stoppen Sie den Timer, wenn die E-Mail-Bestätigung erkannt wird
