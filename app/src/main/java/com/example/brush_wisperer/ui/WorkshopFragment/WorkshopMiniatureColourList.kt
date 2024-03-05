@@ -1,7 +1,6 @@
 package com.example.brush_wisperer.ui.WorkshopFragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import com.example.brush_wisperer.ui.ColourFragment.ApiStatus
 import com.example.brush_wisperer.ui.ColourFragment.ColourViewModel
 import java.util.Locale
 
-class WorkshopPopupColourAdd : Fragment() {
+class WorkshopMiniatureColourList : Fragment() {
     private var isDataLoaded = false
     private lateinit var binding: FragmentWorkshopPopupColourAddBinding
     private val viewModel: WorkshopViewModel by activityViewModels()
@@ -29,7 +28,6 @@ class WorkshopPopupColourAdd : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentWorkshopPopupColourAddBinding.inflate(inflater)
         return binding.root
     }
