@@ -41,7 +41,6 @@ class RepositoryFirebase {
             .addOnFailureListener { e ->
                 Log.w("TAG", "Error adding document", e)
             }
-        //auth.addAuthStateListener(authStateListener)
     }
     private fun sendVerificationEmail() {
         val user = auth.currentUser
@@ -67,17 +66,6 @@ class RepositoryFirebase {
         auth.addAuthStateListener(authStateListener)
     }
 
-    fun authSignInAnonymously() {
-        auth.signInAnonymously()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("TAG", "signInAnonymously:success")
-                } else {
-                    Log.e("TAG", "signInAnonymously:failure", task.exception)
-                }
-            }
-        auth.addAuthStateListener(authStateListener)
-    }
     fun getCurrentUserID(): String? {
         return FirebaseUtil.getCurrentUserID()
     }
