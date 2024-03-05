@@ -9,37 +9,24 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.brush_wisperer.Data.Model.User
-import com.example.brush_wisperer.R
 import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.example.brush_wisperer.MainViewModel
+import com.example.brush_wisperer.R
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
-
-
-class LoginViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-    val auth = Firebase.auth
-    private val db = Firebase.firestore
+    private val auth = Firebase.auth
     private val userDb = RepositoryFirebase()
     private val mainViewModel = MainViewModel(application)
     val navigateToVerification = MutableLiveData<Boolean>()
 
-
-    val user = userDb.user
+    val user: LiveData<FirebaseUser?> = userDb.user
 
     fun signUpNewUserWithEmail(username: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
@@ -69,16 +56,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun loginDialog(enteredEmail: String, enteredPassword: String) {
-
+    fun login(enteredEmail: String, enteredPassword: String) {
         userDb.loginUser(enteredEmail, enteredPassword)
-        if (userDb.user != null) {
-            Log.d("TAG", "loginDialog: ${auth.currentUser}")
-        } else {
-            Log.d("TAG", "loginDialog: ${auth.currentUser}")
-        }
     }
 
+    // TODO Dialog zurück ins Fragment verschieben
     fun signUpDialog(view: View) {
         val builder = AlertDialog.Builder(view.context)
         builder.setTitle("Register")
@@ -102,7 +84,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             val enteredEmail = inputEmail.text.toString()
             val enteredEmailConfirm = inputEmailConfirm.text.toString()
 
-            if (enteredUserName == enteredUserName && enteredPassword == enteredPasswordConfirm && enteredEmail == enteredEmailConfirm) {
+            if (enteredPassword == enteredPasswordConfirm && enteredEmail == enteredEmailConfirm) {
 
                 signUpNewUserWithEmail(enteredUserName, enteredEmail, enteredPassword)
 
@@ -113,10 +95,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
 
         builder.show()
-    }
-
-    fun signInAnonymously() {
-        userDb.authSignInAnonymously()
     }
 
     fun updateCurrentUser() {
