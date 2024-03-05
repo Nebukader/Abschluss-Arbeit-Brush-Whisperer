@@ -1,16 +1,17 @@
 package com.example.brush_wisperer.ui.SettingsFragment
 
+
+import android.app.UiModeManager
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentSettingsBinding
 import com.example.brush_wisperer.ui.LoginFragment.LoginViewModel
-
 
 class SettingsFragment : Fragment() {
 
@@ -28,15 +29,16 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSettingsBinding.bind(view)
 
-        viewModel.user.observe(viewLifecycleOwner) { user ->
-            if (user == null) {
-                findNavController().navigate(R.id.loginFragment)
+        binding.darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                val uiModeManager =
+                    requireContext().getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+                uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_YES)
+            } else {
+                val uiModeManager =
+                    requireContext().getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+                uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_NO)
             }
         }
-
-        binding.logOutButton.setOnClickListener {
-            viewModel.logOut()
-        }
-
-            }
+    }
 }
