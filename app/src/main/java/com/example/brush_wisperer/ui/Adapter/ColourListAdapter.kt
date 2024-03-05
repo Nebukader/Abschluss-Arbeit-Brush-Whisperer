@@ -36,7 +36,7 @@ class ColourListAdapter(
 
         binding.colourShapeIV.imageTintList = colorStateList
         binding.colourNameTV.text = colourData.colour_name
-        val image = "http://dockerpi/back/${colourData.picture}"
+        val image = "http://brushwhisperer.ddns.net:9475/back/${colourData.picture}"
         binding.colourItemIV.load(image)
 
         if (colourData.isFavorite) {
