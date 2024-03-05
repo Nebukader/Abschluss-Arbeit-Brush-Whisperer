@@ -13,7 +13,6 @@ import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.Data.RepositoryBlogPostNews
 import com.example.brush_wisperer.Data.RepositoryFirebase
 import com.example.brush_wisperer.ui.Adapter.HomeLastWishedAdapter
-import com.example.brush_wisperer.ui.Adapter.WorkshopWishlistAdapter
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
@@ -34,11 +33,9 @@ class HomeViewModel (application: Application): AndroidViewModel(application) {
 
     private val _wishlistArrayList = MutableLiveData<List<FirestoreColour>>()
     val wishlistArrayList: LiveData<List<FirestoreColour>> get() = _wishlistArrayList
-
-    var wishlistListener: ListenerRegistration? = null
+    private var wishlistListener: ListenerRegistration? = null
 
     init {
-        updateNews()
         getWishlistColours(HomeLastWishedAdapter(wishlistArrayList.value ?: emptyList()))
     }
 
@@ -50,16 +47,6 @@ class HomeViewModel (application: Application): AndroidViewModel(application) {
 
     private fun currentUserDB(): FirebaseFirestore {
         return firebaseRepo.getDBInstance()
-    }
-
-    fun insertNews() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val news = repository.scrapeBlogPost("/blogs/explore/tagged/news")
-            for (each in news) {
-                Log.d("TAG", "News: $each")
-                repository.insertNews(each)
-            }
-        }
     }
 
     fun updateNews() {
@@ -92,7 +79,7 @@ class HomeViewModel (application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun getWishlistColours(adapter: HomeLastWishedAdapter) {
+    private fun getWishlistColours(adapter: HomeLastWishedAdapter) {
         viewModelScope.launch {
             val currentUserId = firebaseCurrentUserID()
             val db = currentUserDB()
@@ -116,7 +103,6 @@ class HomeViewModel (application: Application): AndroidViewModel(application) {
                     }
                     _wishlistArrayList.value = tempList
                     adapter.notifyDataSetChanged()
-                    Log.d("Data Check", "ArrayList content: ${_wishlistArrayList.value?.toString()}")
                 }
             })
         }
