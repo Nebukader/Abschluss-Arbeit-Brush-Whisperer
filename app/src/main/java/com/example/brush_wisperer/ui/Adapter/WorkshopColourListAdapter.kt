@@ -69,33 +69,39 @@ class WorkshopColourListAdapter(
             } else {
                 binding.colourAddToMiniBTN.setImageResource(R.drawable.add_icon)
             }
-            binding.colourAddToMiniBTN.setOnClickListener{
+            binding.colourAddToMiniBTN.setOnClickListener {
                 if (snapshot != null && snapshot.exists()) {
-                    viewModel.deleteColour(documentid, projectName, miniatureName, colourData.id.toString())
+                    viewModel.deleteColour(
+                        documentid,
+                        projectName,
+                        miniatureName,
+                        colourData.id.toString()
+                    )
                 } else {
                     viewModel.saveMiniColours(
                         documentid, projectName,
                         miniatureName, colourData.id.toString(),
                         colourData.brand_name, colourData.colour_range,
                         colourData.colour_primary, colourData.colour_name,
-                        colourData.hexcode)
+                        colourData.hexcode
+                    )
                 }
             }
         }
-
-
-        fun onApplySearch(colourList: List<ColourEntity>) {
-            submitList(colourList)
-        }
     }
 
-    class WorkshopColourDiffCallback : DiffUtil.ItemCallback<ColourEntity>() {
-        override fun areItemsTheSame(oldItem: ColourEntity, newItem: ColourEntity): Boolean {
-            return oldItem.id == newItem.id
-        }
 
-        override fun areContentsTheSame(oldItem: ColourEntity, newItem: ColourEntity): Boolean {
-            return oldItem == newItem
-        }
+    fun onApplySearch(colourList: List<ColourEntity>) {
+        submitList(colourList)
+    }
+}
+
+class WorkshopColourDiffCallback : DiffUtil.ItemCallback<ColourEntity>() {
+    override fun areItemsTheSame(oldItem: ColourEntity, newItem: ColourEntity): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: ColourEntity, newItem: ColourEntity): Boolean {
+        return oldItem == newItem
     }
 }

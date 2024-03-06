@@ -34,6 +34,7 @@ class WorkshopMiniatureColourList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         colourViewModel = ColourViewModel(application = requireActivity().application)
         val adapter = WorkshopColourListAdapter(viewModel)
         val recyclerView = binding.colourRangesAndColourListRV
@@ -53,12 +54,15 @@ class WorkshopMiniatureColourList : Fragment() {
                 }
             }
         }
+
         colourViewModel.colourList.observe(viewLifecycleOwner) {
             if (!isDataLoaded) {
                 adapter.submitList(it)
                 isDataLoaded = true
             }
         }
+
+
         val context = binding.colourRangesAndColourListRV.context
         val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
 
@@ -77,7 +81,7 @@ class WorkshopMiniatureColourList : Fragment() {
                 val searchList = ArrayList<ColourEntity>()
 
                 if (newText != null) {
-                    for (item in viewModel.colourList.value!!) {
+                    for (item in colourViewModel.colourList.value!!) {
                         val lowerCaseNewText = newText.lowercase(Locale.ROOT)
                         if (item.colour_name.lowercase(Locale.ROOT).contains(lowerCaseNewText)) {
                             searchList.add(item)
@@ -86,14 +90,13 @@ class WorkshopMiniatureColourList : Fragment() {
                     if (searchList.isEmpty()) {
                         Toast.makeText(context, "No Colour found", Toast.LENGTH_SHORT).show()
                     } else {
-                        adapter.submitList(searchList)
+                        adapter.onApplySearch(searchList)
                     }
                 }
                 return true
             }
         })
-
-
     }
+
 }
 
