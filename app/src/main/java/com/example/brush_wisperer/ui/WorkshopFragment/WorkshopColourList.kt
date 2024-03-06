@@ -47,6 +47,7 @@ class WorkshopColourList : Fragment() {
 
         val context = binding.workshopColourListRV.context
         val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
+        binding.workshopColourListRV.layoutAnimation = controller
         binding.workshopColourListRV.scheduleLayoutAnimation()
 
         // Setup Spinner
