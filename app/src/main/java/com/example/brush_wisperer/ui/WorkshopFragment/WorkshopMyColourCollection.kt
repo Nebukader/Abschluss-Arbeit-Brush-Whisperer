@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -76,10 +75,6 @@ class WorkshopMyColourCollection : Fragment() {
         }
         getFavouriteColours()
         binding.myColourCollectionRecyclerView.adapter = adapter
-        // Setup Spinner
-        val spinnerList = arrayOf("The Army Painter", "Games Workshop", "Vallejo","AK Interactive")
-        val spinnerAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_dropdown_item, spinnerList) }
-        binding.brandSpinner.adapter = spinnerAdapter
 
         binding.addColourBtn.setOnClickListener {
             findNavController().navigate(WorkshopMyColourCollectionDirections.actionWorkshopMyColourCollectionToWorkshopColourList())

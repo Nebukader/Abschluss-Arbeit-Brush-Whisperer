@@ -45,6 +45,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val toolbar = (activity as MainActivity).showToolBar(View.GONE)
+
         //verify if user email is verified
         viewModel.navigateToVerification.observe(viewLifecycleOwner, Observer {
             if (it) {
