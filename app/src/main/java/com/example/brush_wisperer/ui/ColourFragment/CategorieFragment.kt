@@ -1,23 +1,19 @@
 package com.example.brush_wisperer.ui.ColourFragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentCategorieBinding
-import com.example.brush_wisperer.databinding.FragmentHomeBinding
-import com.example.brush_wisperer.ui.HomeFragment.HomeViewModel
 
 
 class CategorieFragment : Fragment() {
 
    private val viewModel: ColourViewModel by activityViewModels()
-
-
 
    override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +27,19 @@ class CategorieFragment : Fragment() {
       super.onViewCreated(view, savedInstanceState)
       val binding = FragmentCategorieBinding.bind(view)
 
+      viewModel.loadColourData()
+
       binding.theArmyPainterCV.setOnClickListener {
-         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment())
+         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("The Army Painter"))
+      }
+      binding.gwCV.setOnClickListener {
+         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("Citadel Colour"))
+      }
+      binding.vallejoCV.setOnClickListener {
+         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("Vallejo"))
+      }
+      binding.akCV.setOnClickListener {
+         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("AK Interactive"))
       }
 
     }
