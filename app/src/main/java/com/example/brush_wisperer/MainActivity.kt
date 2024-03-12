@@ -138,6 +138,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.nav_logout -> {
                     viewModel.logOut()
+                    toolbar.visibility = View.GONE
                     true
                 }
 
@@ -184,8 +185,9 @@ class MainActivity : AppCompatActivity() {
                 currentMenuItemId = menuItemId
             }
         }
-// endregion
-        toolbar.visibility = View.GONE
+
+
+        // endregion
 
         val deleteRequest =
             PeriodicWorkRequestBuilder<DeleteDatabaseWorker>(24, TimeUnit.HOURS).build()
@@ -198,6 +200,7 @@ class MainActivity : AppCompatActivity() {
                 if (workInfo != null) {
                 }
             })
+        toolbar.visibility = View.GONE
     }
 
     override fun onSupportNavigateUp(): Boolean {
