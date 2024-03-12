@@ -1,7 +1,6 @@
 package com.example.brush_wisperer.ui.ColourFragment
 
 import android.app.Application
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
@@ -9,11 +8,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.brush_wisperer.Data.Local.Model.ColourEntity
 import com.example.brush_wisperer.Data.Local.Model.Database.ColourDatabaseInstance.getDatabase
 import com.example.brush_wisperer.Data.Model.FirestoreColour
 import com.example.brush_wisperer.Data.Remote.ColourApi
 import com.example.brush_wisperer.Data.RepositoryColours
 import com.example.brush_wisperer.Data.RepositoryFirebase
+import com.example.brush_wisperer.R
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
@@ -30,7 +31,23 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
     val loading: LiveData<ApiStatus>
         get() = _loading
 
-    val colourList = repository.colourList
+    private val _colourList = repository.colourList
+    val colourList: LiveData<List<ColourEntity>>
+        get() = _colourList
+
+    private var _filteredColourList = MutableLiveData<List<ColourEntity>>(listOf())
+
+    val filteredColourList: LiveData<List<ColourEntity>>
+        get() = _filteredColourList
+
+    fun filteredList(brandName: String) {
+        viewModelScope.launch {
+            repository.getBrandColours(brandName).observeForever { colours ->
+                _filteredColourList.value = colours
+                Log.d("Filter", "FilterViewModel = ${_filteredColourList.value.toString()}")
+            }
+        }
+    }
 
     fun firebaseCurrentUserID(): String? {
         return repoFirebase.getCurrentUserID()
@@ -40,16 +57,11 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
         return repoFirebase.getDBInstance()
     }
 
-    init {
-        loadData()
-    }
-
-    private fun loadData() {
+    fun loadColourData() {
         viewModelScope.launch {
             _loading.value = ApiStatus.LOADING
             try {
                 val colours = repository.getDataFromApi()
-                Log.d(TAG, "Colours: $colours")
                 repository.insertAllColours(colours)
                 _loading.value = ApiStatus.DONE
             } catch (e: Exception) {
@@ -141,11 +153,10 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
                 .addOnFailureListener() { e ->
                     Toast.makeText(
                         getApplication(),
-                        "Error adding Colour to Wishlist",
+                        getApplication<Application>().getString(R.string.error_adding_colour_to_wishlist),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
         }
     }
 
