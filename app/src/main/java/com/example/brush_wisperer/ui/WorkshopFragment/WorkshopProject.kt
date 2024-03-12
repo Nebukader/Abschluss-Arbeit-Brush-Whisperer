@@ -5,7 +5,6 @@ import android.content.ContentValues
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -57,9 +56,7 @@ class WorkshopProject : Fragment() {
             val contentValues = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, "project_image.jpg")
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-                }
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
             }
             it.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
         }
