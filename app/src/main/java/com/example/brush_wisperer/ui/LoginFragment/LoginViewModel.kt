@@ -13,8 +13,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.brush_wisperer.Data.Model.User
 import com.example.brush_wisperer.Data.RepositoryFirebase
-import com.example.brush_wisperer.MainViewModel
 import com.example.brush_wisperer.R
+import com.example.brush_wisperer.UtilViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
@@ -23,7 +23,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val auth = Firebase.auth
     private val userDb = RepositoryFirebase()
-    private val mainViewModel = MainViewModel(application)
+    private val utilViewModel = UtilViewModel(application)
     val navigateToVerification = MutableLiveData<Boolean>()
 
     val user: LiveData<FirebaseUser?> = userDb.user
@@ -43,7 +43,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
                 auth.currentUser?.sendEmailVerification()?.addOnCompleteListener { emailTask ->
                     if (emailTask.isSuccessful) {
-                        mainViewModel.showToastAtTop(getApplication(), "Verification email sent to $email")
+                        utilViewModel.showToastAtTop(getApplication(), "Verification email sent to $email")
                         navigateToVerification.value = true
                     } else {
                         Log.w("TAG", "Error sending email verification", emailTask.exception)
@@ -68,11 +68,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         val viewInflated: View =
             LayoutInflater.from(view.context).inflate(R.layout.signup_login, null)
 
-        val inputName = viewInflated.findViewById(R.id.username) as EditText
-        val inputPassword = viewInflated.findViewById(R.id.password) as EditText
-        val inputPasswordConfirm = viewInflated.findViewById(R.id.passwordConfirm) as EditText
-        val inputEmail = viewInflated.findViewById(R.id.email) as EditText
-        val inputEmailConfirm = viewInflated.findViewById(R.id.emailConfirm) as EditText
+        val inputName: EditText = viewInflated.findViewById(R.id.usernameET)
+        val inputPassword: EditText = viewInflated.findViewById(R.id.passwordET)
+        val inputPasswordConfirm: EditText = viewInflated.findViewById(R.id.passwordConfirmET)
+        val inputEmail: EditText = viewInflated.findViewById(R.id.emailET)
+        val inputEmailConfirm: EditText = viewInflated.findViewById(R.id.emailConfirmET)
 
         builder.setView(viewInflated)
 
@@ -103,5 +103,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     fun logOut() {
         userDb.logOut()
+    }
+
+    fun forgottPassword(email: String) {
+            auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    utilViewModel.showToastAtTop(getApplication(), "Email sent to $email")
+                } else {
+                    Log.w("TAG", "Error sending email", task.exception)
+                }
+            }
+
     }
 }
