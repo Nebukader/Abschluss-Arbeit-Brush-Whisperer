@@ -18,6 +18,7 @@ import com.example.brush_wisperer.R
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 enum class ApiStatus { LOADING, ERROR, DONE }
@@ -40,9 +41,9 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
     val filteredColourList: LiveData<List<ColourEntity>>
         get() = _filteredColourList
 
-    fun filteredList(brandName: String) {
+    fun filteredList(brandName: String, colourRange: String) {
         viewModelScope.launch {
-            repository.getBrandColours(brandName).observeForever { colours ->
+            repository.getBrandAndRangeColours(brandName, colourRange).observeForever { colours ->
                 _filteredColourList.value = colours
                 Log.d("Filter", "FilterViewModel = ${_filteredColourList.value.toString()}")
             }
@@ -58,18 +59,18 @@ class ColourViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun loadColourData() {
-        viewModelScope.launch {
-            _loading.value = ApiStatus.LOADING
+        viewModelScope.launch(Dispatchers.IO) {
+            _loading.postValue(ApiStatus.LOADING)
             try {
                 val colours = repository.getDataFromApi()
                 repository.insertAllColours(colours)
-                _loading.value = ApiStatus.DONE
+                _loading.postValue(ApiStatus.DONE)
             } catch (e: Exception) {
                 Log.e(TAG, "Error loading Data $e")
                 if (colourList.value.isNullOrEmpty()) {
-                    _loading.value = ApiStatus.ERROR
+                    _loading.postValue(ApiStatus.ERROR)
                 } else {
-                    _loading.value = ApiStatus.DONE
+                    _loading.postValue(ApiStatus.DONE)
                 }
             }
         }
