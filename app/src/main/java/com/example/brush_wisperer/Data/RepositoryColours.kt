@@ -1,16 +1,20 @@
 package com.example.brush_wisperer.Data
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.brush_wisperer.Data.Local.Model.ColourEntity
 import com.example.brush_wisperer.Data.Local.Model.Database.ColourDatabase
 import com.example.brush_wisperer.Data.Remote.ColourApi
 
-class RepositoryColours(private val database: ColourDatabase,private val colourApi: ColourApi) {
+class RepositoryColours(val database: ColourDatabase, private val colourApi: ColourApi) {
 
     val colourList = database.dao.getAllColours()
 
+
     suspend fun getDataFromApi(): List<ColourEntity> {
         return colourApi.retrofitService.readAll()
+    }
+    suspend fun getBrandColours(brandName: String) : LiveData<List<ColourEntity>> {
+        return database.dao.getBrandColours(brandName)
     }
 
     suspend fun insertAllColours(colourList: List<ColourEntity>) {
@@ -19,7 +23,6 @@ class RepositoryColours(private val database: ColourDatabase,private val colourA
             if (exitstingColour == null) {
                 database.dao.insertColour(colour)
             }
-            Log.d("Repository", "insertAllColours: $colour")
         }
     }
 
