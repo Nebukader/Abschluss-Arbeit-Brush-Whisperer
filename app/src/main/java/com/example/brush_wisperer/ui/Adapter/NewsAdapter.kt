@@ -8,7 +8,6 @@ import coil.load
 import com.example.brush_wisperer.Data.Local.Model.BlogPostEntity
 import com.example.brush_wisperer.databinding.NewsItemBinding
 import com.example.brush_wisperer.ui.HomeFragment.HomeFragmentDirections
-import com.example.brush_wisperer.ui.HomeFragment.HomeViewModel
 
 class NewsAdapter(
     private val blogPosts: List<BlogPostEntity>,
