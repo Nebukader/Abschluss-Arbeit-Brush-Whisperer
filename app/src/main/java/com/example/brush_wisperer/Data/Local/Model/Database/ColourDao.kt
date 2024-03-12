@@ -27,7 +27,7 @@ interface ColourDao {
     @Query("UPDATE colour_table SET isFavorite = :isFavorite WHERE id = :id")
     suspend fun updateFavourite(id: Int, isFavorite: Boolean)
 
-    @Query("SELECT * FROM colour_table WHERE brand_name = :brandName")
-    fun getBrandColours(brandName: String): LiveData<List<ColourEntity>>
+    @Query("SELECT * FROM colour_table WHERE brand_name = :brandName AND colour_range = :colourRange")
+    fun getBrandAndRange(brandName: String, colourRange: String): LiveData<List<ColourEntity>>
 
 }
