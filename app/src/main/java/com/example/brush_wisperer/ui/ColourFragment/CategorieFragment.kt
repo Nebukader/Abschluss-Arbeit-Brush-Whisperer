@@ -30,16 +30,16 @@ class CategorieFragment : Fragment() {
       viewModel.loadColourData()
 
       binding.theArmyPainterCV.setOnClickListener {
-         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("The Army Painter"))
+         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("The Army Painter","Speed Paint"))
       }
       binding.gwCV.setOnClickListener {
-         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("Citadel Colour"))
+         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("Citadel Colour","Base"))
       }
       binding.vallejoCV.setOnClickListener {
-         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("Vallejo"))
+         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("Vallejo","GameColor"))
       }
       binding.akCV.setOnClickListener {
-         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("AK Interactive"))
+         findNavController().navigate(CategorieFragmentDirections.actionCategorieFragmentToColourRangesAndColourListFragment("AK Interactive","3Gen Acrylics"))
       }
 
     }
