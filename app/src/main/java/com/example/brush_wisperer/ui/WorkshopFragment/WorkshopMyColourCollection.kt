@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -82,6 +84,35 @@ class WorkshopMyColourCollection : Fragment() {
         binding.addColourBtn.setOnClickListener {
             findNavController().navigate(WorkshopMyColourCollectionDirections.actionWorkshopMyColourCollectionToWorkshopColourList())
         }
+
+        val searchView = binding.searchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+
+                } else {
+                    val searchList = ArrayList<FirestoreColour>()
+                    val lowerCaseNewText = newText.lowercase()
+
+                    for (item in favouriteColoursArrayList) {
+                        if (item.colourName.lowercase().contains(lowerCaseNewText)) {
+                            searchList.add(item)
+                        }
+                    }
+
+                    if (searchList.isEmpty()) {
+                        Toast.makeText(context, "No Colour found", Toast.LENGTH_SHORT).show()
+                    } else {
+                    }
+                }
+                return true
+            }
+        })
     }
 
 }
