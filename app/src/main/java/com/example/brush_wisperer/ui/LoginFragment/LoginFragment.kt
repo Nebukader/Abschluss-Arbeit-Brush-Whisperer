@@ -1,10 +1,14 @@
 package com.example.brush_wisperer.ui.LoginFragment
 
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
@@ -42,15 +47,14 @@ class LoginFragment : Fragment() {
 
         //verify if user email is verified
         viewModel.navigateToVerification.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it) {
                 findNavController().navigate(R.id.action_loginFragment_to_verificationFragment)
                 viewModel.navigateToVerification.value = false
             }
         })
 
-        viewModel.user.observe(viewLifecycleOwner, Observer {
-                user ->
-            if (user != null){
+        viewModel.user.observe(viewLifecycleOwner, Observer { user ->
+            if (user != null) {
                 findNavController().navigate(R.id.homeFragment)
                 val toolbar = (activity as MainActivity).showToolBar(View.VISIBLE)
             }
@@ -70,6 +74,26 @@ class LoginFragment : Fragment() {
             viewModel.signUpDialog(view)
         }
 
+
+        //Forgot Password
+        binding.forgotPassword.setOnClickListener {
+            val alertDialogLayout =
+                LayoutInflater.from(view.context).inflate(R.layout.forgot_password, null)
+            val builder = AlertDialog.Builder(view.context)
+            builder.setView(alertDialogLayout)
+            val alertDialog = builder.create()
+            alertDialog.show()
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            val emailEditText = alertDialogLayout.findViewById<EditText>(R.id.emailET)
+            val sendButton = alertDialogLayout.findViewById<MaterialButton>(R.id.sendEmailBtn)
+
+            sendButton.setOnClickListener {
+                viewModel.forgottPassword(emailEditText.text.toString())
+                alertDialog.dismiss()
+            }
+        }
+
         // Google Login with Firebase
         val option = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -82,22 +106,31 @@ class LoginFragment : Fragment() {
             startActivityForResult(intent, 10001)
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 10001){
+        if (requestCode == 10001) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             val account = task.getResult(ApiException::class.java)
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
             FirebaseAuth.getInstance().signInWithCredential(credential)
-                .addOnCompleteListener{task ->
-                    if (task.isSuccessful){
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
                         val user = FirebaseAuth.getInstance().currentUser
                         val email = user?.email
-                        Toast.makeText(requireContext(), "${getString(R.string.login_success)} $email", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "${getString(R.string.login_success)} $email",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         viewModel.updateCurrentUser()
-                    }else{
-                        Toast.makeText(requireContext(),"${getString(R.string.login_failed)}", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "${getString(R.string.login_failed)}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
         }
