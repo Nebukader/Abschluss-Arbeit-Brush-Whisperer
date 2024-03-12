@@ -1,7 +1,6 @@
 package com.example.brush_wisperer.ui.ColourFragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import com.example.brush_wisperer.Data.Local.Model.ColourEntity
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentColourRangesAndColourListBinding
 import com.example.brush_wisperer.ui.Adapter.ColourListAdapter
+import com.google.android.material.tabs.TabLayout
 import java.util.Locale
 
 
@@ -24,7 +24,7 @@ class ColourRangesAndColourListFragment : Fragment() {
 
     private val viewModel: ColourViewModel by activityViewModels()
     private lateinit var binding: FragmentColourRangesAndColourListBinding
-    private val safeargs : ColourRangesAndColourListFragmentArgs by navArgs()
+    private val safeargs: ColourRangesAndColourListFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,10 +38,52 @@ class ColourRangesAndColourListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (safeargs.brand != "The Army Painter") {
+            binding.tabLayout.visibility = View.GONE
+        }
+
         val adapter = ColourListAdapter(viewModel)
         val recyclerView = binding.colourRangesAndColourListRV
-        viewModel.filteredList(safeargs.brand)
+        viewModel.filteredList(safeargs.brand, safeargs.colourRange)
+        viewModel.filteredColourList.observe(viewLifecycleOwner) { colourList ->
+            if (colourList.isNotEmpty()) {
+                adapter.submitList(colourList)
+                isDataLoaded = true
+            }
+        }
 
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    binding.tabLayout.getTabAt(0)?.position -> viewModel.filteredList(
+                        safeargs.brand,
+                        "Speed Paint"
+                    )
+
+                    binding.tabLayout.getTabAt(1)?.position -> viewModel.filteredList(
+                        safeargs.brand,
+                        "Warpaints Fanatic"
+                    )
+
+                    binding.tabLayout.getTabAt(2)?.position -> viewModel.filteredList(
+                        safeargs.brand,
+                        "Warpaints Air"
+                    )
+
+                    binding.tabLayout.getTabAt(3)?.position -> viewModel.filteredList(
+                        safeargs.brand,
+                        "Primer"
+                    )
+
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
 
         recyclerView.adapter = adapter
 
@@ -63,7 +105,6 @@ class ColourRangesAndColourListFragment : Fragment() {
         viewModel.filteredColourList.observe(viewLifecycleOwner) { colourList ->
             if (colourList.isNotEmpty() && !isDataLoaded) {
                 adapter.submitList(colourList)
-                Log.d("Filter", "FilterFragmentList = $colourList.toString()")
                 isDataLoaded = true
             }
         }
@@ -89,7 +130,9 @@ class ColourRangesAndColourListFragment : Fragment() {
                 if (newText != null) {
                     for (item in viewModel.filteredColourList.value!!) {
                         val lowerCaseNewText = newText.lowercase(Locale.ROOT)
-                        if (item.colour_name.lowercase(Locale.ROOT).contains(lowerCaseNewText)) {
+                        if (item.colour_name.lowercase(Locale.ROOT)
+                                .contains(lowerCaseNewText)
+                        ) {
                             searchList.add(item)
                         }
                     }
@@ -105,6 +148,4 @@ class ColourRangesAndColourListFragment : Fragment() {
     }
 
 }
-
-
 
