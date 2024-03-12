@@ -1,6 +1,7 @@
 package com.example.brush_wisperer.ui.ColourFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,29 +9,28 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.example.brush_wisperer.Data.Local.Model.ColourEntity
-import com.example.brush_wisperer.Data.Model.ColourList
 import com.example.brush_wisperer.R
 import com.example.brush_wisperer.databinding.FragmentColourRangesAndColourListBinding
 import com.example.brush_wisperer.ui.Adapter.ColourListAdapter
 import java.util.Locale
 
 
-
 class ColourRangesAndColourListFragment : Fragment() {
 
     private var isDataLoaded = false
 
-    private val viewModel: ColourViewModel by viewModels()
+    private val viewModel: ColourViewModel by activityViewModels()
     private lateinit var binding: FragmentColourRangesAndColourListBinding
+    private val safeargs : ColourRangesAndColourListFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentColourRangesAndColourListBinding.inflate(inflater)
         return binding.root
     }
@@ -40,9 +40,10 @@ class ColourRangesAndColourListFragment : Fragment() {
 
         val adapter = ColourListAdapter(viewModel)
         val recyclerView = binding.colourRangesAndColourListRV
+        viewModel.filteredList(safeargs.brand)
+
 
         recyclerView.adapter = adapter
-
 
         viewModel.loading.observe(viewLifecycleOwner) {
             when (it) {
@@ -58,14 +59,16 @@ class ColourRangesAndColourListFragment : Fragment() {
                 }
             }
         }
-        viewModel.colourList.observe(viewLifecycleOwner) { colourList ->
-            if (!isDataLoaded) {
+
+        viewModel.filteredColourList.observe(viewLifecycleOwner) { colourList ->
+            if (colourList.isNotEmpty() && !isDataLoaded) {
                 adapter.submitList(colourList)
+                Log.d("Filter", "FilterFragmentList = $colourList.toString()")
                 isDataLoaded = true
             }
         }
 
-        //Starten der Animation beim ersten Laden
+        //Start the animation when the first load
         val context = binding.colourRangesAndColourListRV.context
         val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
 
@@ -84,7 +87,7 @@ class ColourRangesAndColourListFragment : Fragment() {
                 val searchList = ArrayList<ColourEntity>()
 
                 if (newText != null) {
-                    for (item in viewModel.colourList.value!!) {
+                    for (item in viewModel.filteredColourList.value!!) {
                         val lowerCaseNewText = newText.lowercase(Locale.ROOT)
                         if (item.colour_name.lowercase(Locale.ROOT).contains(lowerCaseNewText)) {
                             searchList.add(item)
