@@ -35,5 +35,23 @@
     <string name="create_and_manage_your_projects">Create and manage your Projects</string>
     <string name="wishlist">Wishlist</string>
     <string name="all_your_missing_colours_in_one_place">All your Missing Colours in one place</string>
+    <string name="error_adding_colour_to_wishlist">Error adding Colour to Wishlist</string>
+    <string name="choose_youre_miniature">Choose youre Miniature</string>
+    <string name="choose_a_image">Choose a Image</string>
+    <string name="miniature_name">Miniature Name</string>
+    <string name="how_many_units">How many Units ?</string>
+    <string name="add_miniature">Add Miniature</string>
+    <string name="miniature_name_project_tiem">Miniature Name</string>
+    <string name="amount">Amount:</string>
+    <string name="from">from</string>
+    <string name="count_up">add to the taskbar one finished miniature</string>
+    <string name="new_project">New Project</string>
+    <string name="choose_a_image_for_your_project">Choose a Image for your Project</string>
+    <string name="project_name">Project Name</string>
+    <string name="project_description">Project Description</string>
+    <string name="how_many_minatures_has_youre_project">How many Minatures has youre Project ?</string>
+    <string name="create">Create</string>
+    <string name="enter_password">Enter password</string>
+    <string name="confirm_your_password">Confirm your password</string>
 
 </resources>
