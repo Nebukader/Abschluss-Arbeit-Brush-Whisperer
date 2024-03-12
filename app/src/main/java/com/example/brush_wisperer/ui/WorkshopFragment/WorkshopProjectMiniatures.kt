@@ -57,9 +57,10 @@ class WorkshopProjectMiniatures : Fragment() {
         super.onCreate(savedInstanceState)
         //region Photo and Gallery
         photoUri = activity?.contentResolver?.let {
+            val uniqueName = "file_${System.currentTimeMillis()}"
             val contentValues = ContentValues().apply {
-                put(MediaStore.MediaColumns.DISPLAY_NAME, "project_image.jpg")
-                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                put(MediaStore.MediaColumns.DISPLAY_NAME, uniqueName)
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
                 put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
             }
             it.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
