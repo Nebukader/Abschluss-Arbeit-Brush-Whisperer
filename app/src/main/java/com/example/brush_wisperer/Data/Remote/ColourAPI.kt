@@ -7,30 +7,24 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
-const val BASE_URL = "http://brushwhisperer.ddns.net:9475/back/api/"
+const val BASE_URL = "http://brushwhisperer.ddns.net:9580/back/api/"
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
-// Retrofit übernimmt die Kommunikation und übersetzt die Antwort
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
 
-// Das Interface bestimmt, wie mit dem Server kommuniziert wird
 interface ColourApiService {
 
-    /**
-     * Diese Funktion spezifiziert die URL und holt die Liste an Informationen
-     */
     @GET("readAll.php")
     suspend fun readAll(): List<ColourEntity>
 
 }
 
-// Das Objekt dient als Zugangspunkt für den Rest der App und stellt den API Service zur Verfügung
 object ColourApi {
     val retrofitService: ColourApiService by lazy { retrofit.create(ColourApiService::class.java) }
 }
