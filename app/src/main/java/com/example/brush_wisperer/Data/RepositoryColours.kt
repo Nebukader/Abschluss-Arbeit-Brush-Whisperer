@@ -13,8 +13,8 @@ class RepositoryColours(val database: ColourDatabase, private val colourApi: Col
     suspend fun getDataFromApi(): List<ColourEntity> {
         return colourApi.retrofitService.readAll()
     }
-    suspend fun getBrandColours(brandName: String) : LiveData<List<ColourEntity>> {
-        return database.dao.getBrandColours(brandName)
+    suspend fun getBrandAndRangeColours(brandName: String, colourRange: String) : LiveData<List<ColourEntity>> {
+        return database.dao.getBrandAndRange(brandName,colourRange)
     }
 
     suspend fun insertAllColours(colourList: List<ColourEntity>) {
