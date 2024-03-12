@@ -58,7 +58,11 @@
         android:id="@+id/colourRangesAndColourListFragment"
         android:name="com.example.brush_wisperer.ui.ColourFragment.ColourRangesAndColourListFragment"
         android:label="Colour List"
-        tools:layout="@layout/fragment_colour_ranges_and_colour_list" />
+        tools:layout="@layout/fragment_colour_ranges_and_colour_list" >
+        <argument
+            android:name="brand"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.brush_wisperer.ui.SettingsFragment.SettingsFragment"
