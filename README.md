@@ -18,7 +18,7 @@ Hier ist ein Überblick über die Funktionen:
 - Eine Wunschliste, damit du immer im Auge hast, welche besonderen Farben dir noch für dein Projekt oder deine Sammlung fehlen.
 - Die Möglichkeit, eigene Projekte zu planen. Das bedeutet, dass man sich beispielsweise eine Box mit Miniaturen kauft oder druckt und dann Farben für die einzelnen Figuren planen kann, um den Überblick nicht zu verlieren.
 - Tutorials für Anfänger und Fortgeschrittene zum Thema Miniature Painting von professionellen Künstlern (YouTube).
-- Deine Farbsammlung und Projekte bleiben selbst bei einem Wechsel auf ein neues Smartphone erhalten, da alles sicher in Firebase gespeichert ist.
+- Deine Farbsammlung und Projekte bleiben selbst bei einem Wechsel auf ein neues Smartphone erhalten, da alles sicher in Firebase gespeichert ist. ( Aktuell können Nutzer nicht selbst ihren Account Löschen )
 
 ### Genutzte Dependencies
 ---
